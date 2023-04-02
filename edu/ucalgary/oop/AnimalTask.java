@@ -7,8 +7,8 @@ public class AnimalTask extends Task {
     // Constructor
     public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow) {
         super(startHour, taskID, maxWindow);
-        this.animal = animal;
-        this.description = description;
+        setAnimal(animal);
+        setDescription(description);
     }
 
     // Getters and setters

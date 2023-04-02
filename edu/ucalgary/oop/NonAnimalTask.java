@@ -7,8 +7,8 @@ public class NonAnimalTask extends Task {
     // Constructor
     public NonAnimalTask(int cage, int feeding, int startHour, int taskID, int maxWindow) {
         super(startHour, taskID, maxWindow);
-        this.cage = cage;
-        this.feeding = feeding;
+        setCage(cage);
+        setFeeding(feeding);
     }
 
     // Getters and setters
