@@ -5,10 +5,10 @@ public class Animal {
     private String animalSpecies;
     private int animalID;
 
-    public Animal(int id, String name, String species) {
-        this.animalNickname = name;
-        this.animalSpecies = species;
-        this.animalID = id;
+    public Animal(int AnimalID, String AnimalNickname, String AnimalSpecies) {
+        this.animalNickname = AnimalNickname;
+        this.animalSpecies = AnimalSpecies;
+        this.animalID = AnimalID;
     }
 
     public void setAnimalID(int id) {
