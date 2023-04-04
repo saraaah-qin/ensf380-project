@@ -37,8 +37,17 @@ public class AnimalTesting {
             Assert.assertEquals("Buddy", animal.getAnimalNickname());
             Assert.assertEquals("Cat", animal.getAnimalSpecies());
         }
+    // This test case checks if the animal's name can be set to an empty string
+    @Test
+    public void testAnimalSetNameEmpty() {
+        Animal animal = new Animal(3,"Severus", "Snake ");
+        animal.setAnimalSpecies("");
+        Assert.assertEquals("Snake", animal.getAnimalSpecies());
+    }
+
 
         // let me know if we need to create test for exceptions
+
 
 
 
