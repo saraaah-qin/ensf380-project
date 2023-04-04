@@ -6,7 +6,7 @@ public class Task {
     private int maxWindow;
 
     // Constructor added because it's missing in the UML diagram
-    public Task(int startHour, int taskID, int maxWindow) {
+    public Task(int taskID, int startHour, int maxWindow) {
         this.startHour = startHour;
         this.taskID = taskID;
         this.maxWindow = maxWindow;
