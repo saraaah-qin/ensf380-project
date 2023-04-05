@@ -3,12 +3,14 @@ package edu.ucalgary.oop;
 public class AnimalTask extends Task {
     private Animal animal;
     private String description;
+    private int duration;
 
     // Constructor
-    public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow) {
-        super(startHour, taskID, maxWindow);
+    public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow, int duration) {
+        super(taskID, startHour, maxWindow);
         setAnimal(animal);
         setDescription(description);
+        setDuration(duration);
     }
 
     // Getters and setters
@@ -20,12 +22,20 @@ public class AnimalTask extends Task {
         this.description = description;
     }
 
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
     public Animal getAnimal() {
         return this.animal;
     }
 
     public String getDescription() {
         return this.description;
+    }
+
+    public int getDuration() {
+        return this.duration;
     }
 
 }

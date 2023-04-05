@@ -34,5 +34,4 @@ public class Animal {
     public String getAnimalSpecies() {
         return this.animalSpecies;
     }
-
 }
