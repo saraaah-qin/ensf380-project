@@ -75,46 +75,145 @@ public class Schedule {
             tasksQuery.close();
 
             // print out the animal tasks
-            System.out.println("AnimalID TaskID MaxWindow StartHour Duration");
-            for (AnimalTask task : animalTasks) {
-                System.out
-                        .println(task.getAnimal().getAnimalID() + " " + task.getTaskID() + " "
-                                + task.getMaxWindow()
-                                + " "
-                                + task.getStartHour()
-                                + " "
-                                + task.getDuration());
-            }
+            // System.out.println("AnimalID TaskID MaxWindow StartHour Duration");
+            // for (AnimalTask task : animalTasks) {
+            // System.out
+            // .println(task.getAnimal().getAnimalID() + " " + task.getTaskID() + " "
+            // + task.getMaxWindow()
+            // + " "
+            // + task.getStartHour()
+            // + " "
+            // + task.getDuration());
+            // }
 
             Map<Integer, Integer> startFirst = new HashMap();
             int maxWindow = 1;
             int startHour = 0;
-            int duration = 0;
             for (AnimalTask task : animalTasks) {
                 if (task.getMaxWindow() == maxWindow) {
                     if (task.getStartHour() == startHour) {
-                        duration += task.getDuration();
+                        if (startFirst.containsKey(task.getStartHour())) {
+                            int time = startFirst.get(startHour);
+                            if (time + task.getDuration() <= 60) {
+                                System.out.println(startHour + ": " + time);
+                                time += task.getDuration();
+                                startFirst.put(startHour, time);
+                            } else {
+                                boolean nextAvailable = false;
+                                while (nextAvailable) {
+                                    int newHour = startHour + 1;
+                                    if (startFirst.containsKey(newHour)) {
+                                        time = startFirst.get(newHour);
+                                        if (time + task.getDuration() <= 60) {
+                                            System.out.println(newHour + ": " + time);
+                                            time += task.getDuration();
+                                            startFirst.put(newHour, time);
+                                            nextAvailable = true;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            int time = 0;
+                            System.out.println(startHour + ": " + time);
+                            time += task.getDuration();
+                            startFirst.put(startHour, time);
+                        }
                     } else {
                         startHour = task.getStartHour();
-                        duration = task.getDuration();
+                        if (startFirst.containsKey(task.getStartHour())) {
+                            int time = startFirst.get(startHour);
+                            if (time + task.getDuration() <= 60) {
+                                System.out.println(startHour + ": " + time);
+                                time += task.getDuration();
+                                startFirst.put(startHour, time);
+                            } else {
+                                boolean nextAvailable = false;
+                                while (nextAvailable) {
+                                    int newHour = startHour + 1;
+                                    if (startFirst.containsKey(newHour)) {
+                                        time = startFirst.get(newHour);
+                                        if (time + task.getDuration() <= 60) {
+                                            System.out.println(newHour + ": " + time);
+                                            time += task.getDuration();
+                                            startFirst.put(newHour, time);
+                                            nextAvailable = true;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            int time = 0;
+                            System.out.println(startHour + ": " + time);
+                            time += task.getDuration();
+                            startFirst.put(startHour, time);
+                        }
                     }
-                    int time = duration - task.getDuration();
-                    System.out.println(startHour + ": " + time);
-                    // } else {
-                    // maxWindow = task.getMaxWindow();
-                    // startHour = task.getStartHour();
-                    // duration = startFirst.get(startHour);
-                    // if (task.getStartHour() == startHour) {
-                    // duration += task.getDuration();
-                    // } else {
-                    // startHour = task.getStartHour();
-                    // duration = task.getDuration();
-                    // }
-                    // int time = duration - task.getDuration();
-                    // System.out.println(startHour + ": " + time);
+
+                } else {
+                    maxWindow = task.getMaxWindow();
+                    startHour = task.getStartHour();
+                    if (task.getStartHour() == startHour) {
+                        if (startFirst.containsKey(task.getStartHour())) {
+                            int time = startFirst.get(startHour);
+                            if (time + task.getDuration() <= 60) {
+                                System.out.println(startHour + ": " + time);
+                                time += task.getDuration();
+                                startFirst.put(startHour, time);
+                            } else {
+                                boolean nextAvailable = false;
+                                while (nextAvailable) {
+                                    int newHour = startHour + 1;
+                                    if (startFirst.containsKey(newHour)) {
+                                        time = startFirst.get(newHour);
+                                        if (time + task.getDuration() <= 60) {
+                                            System.out.println(newHour + ": " + time);
+                                            time += task.getDuration();
+                                            startFirst.put(newHour, time);
+                                            nextAvailable = true;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            int time = 0;
+                            System.out.println(startHour + ": " + time);
+                            time += task.getDuration();
+                            startFirst.put(startHour, time);
+                        }
+                    } else {
+                        startHour = task.getStartHour();
+                        if (startFirst.containsKey(task.getStartHour())) {
+                            int time = startFirst.get(startHour);
+                            if (time + task.getDuration() <= 60) {
+                                System.out.println(startHour + ": " + time);
+                                time += task.getDuration();
+                                startFirst.put(startHour, time);
+                            } else {
+                                boolean nextAvailable = false;
+                                while (nextAvailable) {
+                                    int newHour = startHour + 1;
+                                    if (startFirst.containsKey(newHour)) {
+                                        time = startFirst.get(newHour);
+                                        if (time + task.getDuration() <= 60) {
+                                            System.out.println(newHour + ": " + time);
+                                            time += task.getDuration();
+                                            startFirst.put(newHour, time);
+                                            nextAvailable = true;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            int time = 0;
+                            System.out.println(startHour + ": " + time);
+                            time += task.getDuration();
+                            startFirst.put(startHour, time);
+                        }
+                    }
 
                 }
-                startFirst.put(startHour, duration);
+
             }
 
             // print out the startFirst map
@@ -145,7 +244,9 @@ public class Schedule {
              * - Porcupines(5min/each)
              */
 
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             System.out.println(e);
         }
     }
