@@ -90,7 +90,14 @@ public class Schedule {
                                 else{
                                     task.startTime = String.valueOf(hour) + ":" + String.valueOf(time % 60);
                                 }
-                                task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60 + task.getDuration());
+                                // task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60 + task.getDuration());
+                                 
+                                if((time % 60+task.getDuration())%60<10){
+                                    task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + "0"+ String.valueOf(time % 60+task.getDuration());
+                                }
+                                else{
+                                    task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60+task.getDuration());
+                                }
                                 time += task.getDuration();
                                 scheduleAnimalTasks.add(task);
                                 iterator.remove(); // remove task from animalTasks
@@ -106,6 +113,12 @@ public class Schedule {
                             }
                             hour += task.getDuration() / 60;
                             task.endTime = String.valueOf(hour+ 1+task.getDuration()/60) + ":" + String.valueOf((time % 60 + task.getDuration()) % 60);
+                            if((time % 60 + task.getDuration()) % 60<10){
+                                task.endTime = String.valueOf(hour+ 1+task.getDuration()/60) + ":" + "0"+String.valueOf((time % 60 + task.getDuration()) % 60);
+                            }
+                            else{
+                                task.endTime = String.valueOf(hour+ 1+task.getDuration()/60) + ":" + String.valueOf((time % 60 + task.getDuration()) % 60);
+                            }
                             time += task.getDuration();
                             scheduleAnimalTasks.add(task);
                             iterator.remove(); // remove task from animalTasks
