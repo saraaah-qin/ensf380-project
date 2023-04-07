@@ -63,7 +63,7 @@ public class Schedule {
                             "FROM TREATMENTS " +
                             "JOIN TASKS ON TREATMENTS.TaskID = TASKS.TaskID " +
                             "JOIN ANIMALS ON TREATMENTS.AnimalID = ANIMALS.AnimalID " +
-                            "ORDER BY TASKS.MaxWindow ASC, TREATMENTS.StartHour ASC;");
+                            "ORDER BY (TREATMENTS.StartHour + TASKS.MaxWindow) ASC, TREATMENTS.StartHour ASC, TASKS.Duration DESC;");
             while (tasksQuery.next()) {
                 animalTasks.add(new AnimalTask(animals.get(tasksQuery.getInt("AnimalID")),
                         tasksQuery.getString("Description"),
