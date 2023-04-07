@@ -6,9 +6,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
+
+import org.w3c.dom.ranges.Range;
 
 public class Schedule {
     public static void main(String[] args) {
@@ -31,30 +34,6 @@ public class Schedule {
             }
             animalQuery.close();
 
-            // print out the animals
-            // for (Map.Entry<Integer, Animal> entry : animals.entrySet()) {
-            // System.out.println(entry.getKey() + " " +
-            // entry.getValue().getAnimalNickname() + " "
-            // + entry.getValue().getAnimalSpecies());
-            // }
-
-            // task 1 is always fixed - kit feed
-            // ResultSet tasksQuery = statement.executeQuery("SELECT * FROM tasks");
-            // while (tasksQuery.next()) {
-            // System.out.println(tasksQuery.getInt("TaskID") + " " +
-            // tasksQuery.getString("Description") + " "
-            // + tasksQuery.getInt("Duration") + " " + tasksQuery.getInt("MaxWindow"));
-            // }
-            // tasksQuery.close();
-
-            // ResultSet treatmentsQuery = statement.executeQuery("SELECT * FROM
-            // treatments");
-            // while (treatmentsQuery.next()) {
-            // System.out.println(treatmentsQuery.getInt("AnimalID") + " " +
-            // treatmentsQuery.getInt("TaskID") + " "
-            // + treatmentsQuery.getInt("StartHour"));
-            // }
-            // treatmentsQuery.close();
 
             List<AnimalTask> animalTasks = new ArrayList();
             ResultSet tasksQuery = statement.executeQuery(
@@ -74,153 +53,143 @@ public class Schedule {
 
             tasksQuery.close();
 
-            // print out the animal tasks
-            // System.out.println("AnimalID TaskID MaxWindow StartHour Duration");
-            // for (AnimalTask task : animalTasks) {
-            // System.out
-            // .println(task.getAnimal().getAnimalID() + " " + task.getTaskID() + " "
-            // + task.getMaxWindow()
-            // + " "
-            // + task.getStartHour()
-            // + " "
-            // + task.getDuration());
-            // }
 
-            Map<Integer, Integer> startFirst = new HashMap();
-            int maxWindow = 1;
-            int startHour = 0;
+            List<AnimalTask> scheduleAnimalTasks = new ArrayList(); // primary scheduled list
+            List<AnimalTask> scheduleAnimalTasks2 = new ArrayList(); // secondary scheduled list for the assistant
+
+
+            int max=0;
+
             for (AnimalTask task : animalTasks) {
-                if (task.getMaxWindow() == maxWindow) {
-                    if (task.getStartHour() == startHour) {
-                        if (startFirst.containsKey(task.getStartHour())) {
-                            int time = startFirst.get(startHour);
-                            if (time + task.getDuration() <= 60) {
-                                System.out.println(startHour + ": " + time);
-                                time += task.getDuration();
-                                startFirst.put(startHour, time);
-                            } else {
-                                boolean nextAvailable = false;
-                                while (nextAvailable) {
-                                    int newHour = startHour + 1;
-                                    if (startFirst.containsKey(newHour)) {
-                                        time = startFirst.get(newHour);
-                                        if (time + task.getDuration() <= 60) {
-                                            System.out.println(newHour + ": " + time);
-                                            time += task.getDuration();
-                                            startFirst.put(newHour, time);
-                                            nextAvailable = true;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            int time = 0;
-                            System.out.println(startHour + ": " + time);
-                            time += task.getDuration();
-                            startFirst.put(startHour, time);
-                        }
-                    } else {
-                        startHour = task.getStartHour();
-                        if (startFirst.containsKey(task.getStartHour())) {
-                            int time = startFirst.get(startHour);
-                            if (time + task.getDuration() <= 60) {
-                                System.out.println(startHour + ": " + time);
-                                time += task.getDuration();
-                                startFirst.put(startHour, time);
-                            } else {
-                                boolean nextAvailable = false;
-                                while (nextAvailable) {
-                                    int newHour = startHour + 1;
-                                    if (startFirst.containsKey(newHour)) {
-                                        time = startFirst.get(newHour);
-                                        if (time + task.getDuration() <= 60) {
-                                            System.out.println(newHour + ": " + time);
-                                            time += task.getDuration();
-                                            startFirst.put(newHour, time);
-                                            nextAvailable = true;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            int time = 0;
-                            System.out.println(startHour + ": " + time);
-                            time += task.getDuration();
-                            startFirst.put(startHour, time);
-                        }
-                    }
-
-                } else {
-                    maxWindow = task.getMaxWindow();
-                    startHour = task.getStartHour();
-                    if (task.getStartHour() == startHour) {
-                        if (startFirst.containsKey(task.getStartHour())) {
-                            int time = startFirst.get(startHour);
-                            if (time + task.getDuration() <= 60) {
-                                System.out.println(startHour + ": " + time);
-                                time += task.getDuration();
-                                startFirst.put(startHour, time);
-                            } else {
-                                boolean nextAvailable = false;
-                                while (nextAvailable) {
-                                    int newHour = startHour + 1;
-                                    if (startFirst.containsKey(newHour)) {
-                                        time = startFirst.get(newHour);
-                                        if (time + task.getDuration() <= 60) {
-                                            System.out.println(newHour + ": " + time);
-                                            time += task.getDuration();
-                                            startFirst.put(newHour, time);
-                                            nextAvailable = true;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            int time = 0;
-                            System.out.println(startHour + ": " + time);
-                            time += task.getDuration();
-                            startFirst.put(startHour, time);
-                        }
-                    } else {
-                        startHour = task.getStartHour();
-                        if (startFirst.containsKey(task.getStartHour())) {
-                            int time = startFirst.get(startHour);
-                            if (time + task.getDuration() <= 60) {
-                                System.out.println(startHour + ": " + time);
-                                time += task.getDuration();
-                                startFirst.put(startHour, time);
-                            } else {
-                                boolean nextAvailable = false;
-                                while (nextAvailable) {
-                                    int newHour = startHour + 1;
-                                    if (startFirst.containsKey(newHour)) {
-                                        time = startFirst.get(newHour);
-                                        if (time + task.getDuration() <= 60) {
-                                            System.out.println(newHour + ": " + time);
-                                            time += task.getDuration();
-                                            startFirst.put(newHour, time);
-                                            nextAvailable = true;
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            int time = 0;
-                            System.out.println(startHour + ": " + time);
-                            time += task.getDuration();
-                            startFirst.put(startHour, time);
-                        }
-                    }
-
+                if (task.getStartHour()+task.getMaxWindow() > max) {
+                    max = task.getStartHour()+task.getDuration();
                 }
-
             }
+           
+           
+
+
+            int leftover=0;
+            int hour =0;
+            int spillOver=0;
+            int time=0;
+            while(hour <= max) {
+                Iterator<AnimalTask> iterator = animalTasks.iterator();
+            
+                while(iterator.hasNext()) {
+                    AnimalTask task = iterator.next();
+            
+                    if(time >= 60) {
+                        break;
+                    }
+            
+                    if(task.getStartHour() <= hour) {
+                        if(time + task.getDuration() <= 60) {
+                            if(hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
+ 
+                                if(time % 60<10){
+                                    task.startTime = String.valueOf(hour) + ":" + "0"+ String.valueOf(time % 60);
+                                }
+                                else{
+                                    task.startTime = String.valueOf(hour) + ":" + String.valueOf(time % 60);
+                                }
+                                // task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60 + task.getDuration());
+                                 
+                              
+                                if((time +task.getDuration())%60 <10){
+                                    task.endTime = String.valueOf(hour + (task.getDuration()+time) / 60) + ":" + "0"+ String.valueOf((time +task.getDuration())%60);
+                                }
+                                else{
+                                    task.endTime = String.valueOf(hour + (time+task.getDuration()) / 60) + ":" + String.valueOf((time +task.getDuration())%60);
+                                }
+                                time += task.getDuration();
+                                scheduleAnimalTasks.add(task);
+                                iterator.remove(); // remove task from animalTasks
+                                
+                            }
+                     }
+                }}
+                time = 0;
+                hour += 1;
+            }
+        
+
+            if( animalTasks.size()>0){
+                leftover=0;
+                hour =0;
+                spillOver=0;
+                time=0;
+                while(hour<=max){
+                    Iterator<AnimalTask> iterator2 = animalTasks.iterator();
+                    while(iterator2.hasNext()) {
+                        AnimalTask task = iterator2.next();
+                        if(time>=60){
+                            break;
+                        }
+                        if (task.getStartHour()<=hour){
+                            if(time+task.getDuration()<=60){
+                                if(hour+task.getDuration()/60 <task.getMaxWindow()+task.getStartHour()){
+                                    if(hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
+ 
+                                        if(time % 60<10){
+                                            task.startTime = String.valueOf(hour) + ":" + "0"+ String.valueOf(time % 60);
+                                        }
+                                        else{
+                                            task.startTime = String.valueOf(hour) + ":" + String.valueOf(time % 60);
+                                        }
+                                        // task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60 + task.getDuration());
+                                         
+                                      
+                                        if((time +task.getDuration())%60 <10){
+                                            task.endTime = String.valueOf(hour + (task.getDuration()+time) / 60) + ":" + "0"+ String.valueOf((time +task.getDuration())%60);
+                                        }
+                                        else{
+                                            task.endTime = String.valueOf(hour + (time+task.getDuration()) / 60) + ":" + String.valueOf((time +task.getDuration())%60);
+                                        }
+                                        time += task.getDuration();
+                                        scheduleAnimalTasks2.add(task);
+                                        iterator2.remove(); // remove task from animalTasks
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    time=0;
+                    hour+=1;
+                }
+            }
+        
+            if(animalTasks.size()>0){
+                System.out.println("No schedule possible");
+                System.out.println("There is no space for the volunteer and Sara to do the following task(s):");
+                for (AnimalTask task : animalTasks) {
+                    System.out.println(task);
+                }
+                return;
+            }
+
+
+// I NOW NEED TO ORGANIZE ALL THE START DATES
+
+        
 
             // print out the startFirst map
-            System.out.println("StartHour Duration");
-            for (Map.Entry<Integer, Integer> entry : startFirst.entrySet()) {
-                System.out.println(entry.getKey() + " " + entry.getValue());
+            System.out.println("First Schedule");
+
+            for (AnimalTask task : scheduleAnimalTasks) {
+                
+                // if(currentTime!=task.startTime.charAt(0)){
+                //    System.out.println(task.startTime+":00");
+                //    currentTime=task.startTime.charAt(0);}
+               
+                System.out.println("Animal ID"+ task.getAnimal().getAnimalID()+" Task ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime + " Duration: "+ task.getDuration());
             }
+            System.out.println("Assistant Schedule");
+            for(AnimalTask task : scheduleAnimalTasks2){
+                System.out.println("ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime);
+            }
+
 
             myConnect.close();
 
@@ -244,10 +213,12 @@ public class Schedule {
              * - Porcupines(5min/each)
              */
 
-        } catch (
-
-        Exception e) {
+     } catch (Exception e) {
             System.out.println(e);
         }
-    }
-}
+    }}
+
+
+
+
+

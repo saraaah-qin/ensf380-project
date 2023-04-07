@@ -4,6 +4,8 @@ public class AnimalTask extends Task {
     private Animal animal;
     private String description;
     private int duration;
+    public String startTime;
+    public String endTime;
 
     // Constructor
     public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow, int duration) {
