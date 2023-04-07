@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,35 +15,42 @@ import java.util.TreeSet;
 import org.w3c.dom.ranges.Range;
 
 public class Schedule {
+    private static List<AnimalTask> scheduleAnimalTasks = new ArrayList(); // primary scheduled list
+    private static List<AnimalTask> scheduleAnimalTasks2 = new ArrayList(); // secondary scheduled list for the assistant
+    private static List<AnimalTask> leftOverTasks = new ArrayList(); // Tertiary scheduled list for the animal tasks that are not able to be scheduled
     public static void main(String[] args) {
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            Connection myConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "oop",
-                    "password");
+            Connection myConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "oop", "password");
             Statement statement = myConnect.createStatement();
-
             ResultSet animalQuery = statement.executeQuery("SELECT * FROM animals");
-
+           
             // create a hashmap for animal objects so that we can easily access them by
             // animalID
+           
             Map<Integer, Animal> animals = new HashMap();
+
+
             while (animalQuery.next()) {
-                Animal animal = new Animal(animalQuery.getInt("AnimalID"), animalQuery.getString("AnimalNickname"),
-                        animalQuery.getString("AnimalSpecies"));
+                Animal animal = new Animal(animalQuery.getInt("AnimalID"), animalQuery.getString("AnimalNickname"), animalQuery.getString("AnimalSpecies"));
                 animals.put(animalQuery.getInt("AnimalID"), animal);
             }
+
             animalQuery.close();
 
 
             List<AnimalTask> animalTasks = new ArrayList();
             ResultSet tasksQuery = statement.executeQuery(
-                    "SELECT TREATMENTS.AnimalID, TREATMENTS.TaskID, TREATMENTS.StartHour, TASKS.MaxWindow, TASKS.Description, TASKS.Duration "
-                            +
+"SELECT TREATMENTS.AnimalID, TREATMENTS.TaskID, TREATMENTS.StartHour, TASKS.MaxWindow, TASKS.Description, TASKS.Duration "
+                    +
                             "FROM TREATMENTS " +
                             "JOIN TASKS ON TREATMENTS.TaskID = TASKS.TaskID " +
                             "JOIN ANIMALS ON TREATMENTS.AnimalID = ANIMALS.AnimalID " +
-                            "ORDER BY (TREATMENTS.StartHour + TASKS.MaxWindow) ASC, TREATMENTS.StartHour ASC, TASKS.Duration DESC;");
+                            "ORDER BY (TASKS.MaxWindow) ASC,  TASKS.Duration DESC, TREATMENTS.StartHour ASC;");
+
+
             while (tasksQuery.next()) {
                 animalTasks.add(new AnimalTask(animals.get(tasksQuery.getInt("AnimalID")),
                         tasksQuery.getString("Description"),
@@ -54,26 +62,16 @@ public class Schedule {
             tasksQuery.close();
 
 
-            List<AnimalTask> scheduleAnimalTasks = new ArrayList(); // primary scheduled list
-            List<AnimalTask> scheduleAnimalTasks2 = new ArrayList(); // secondary scheduled list for the assistant
-
-
-            int max=0;
-
-            for (AnimalTask task : animalTasks) {
-                if (task.getStartHour()+task.getMaxWindow() > max) {
-                    max = task.getStartHour()+task.getDuration();
-                }
+            for (AnimalTask task1 : animalTasks) {
+                System.out.println("Start Hour: "+ task1.getStartHour()+ " Max Window: "+ task1.getMaxWindow()+ " Duration: "+ task1.getDuration()+ " Description: "+ task1.getDescription()+ " Animal ID: "+ task1.getAnimal().getAnimalID()+ " Animal Nickname: "+ task1.getAnimal().getAnimalNickname()+ " Animal Species: "+ task1.getAnimal().getAnimalSpecies());
             }
-           
-           
 
 
             int leftover=0;
             int hour =0;
             int spillOver=0;
             int time=0;
-            while(hour <= max) {
+            while(hour < 24) {
                 Iterator<AnimalTask> iterator = animalTasks.iterator();
             
                 while(iterator.hasNext()) {
@@ -87,24 +85,11 @@ public class Schedule {
                         if(time + task.getDuration() <= 60) {
                             if(hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
  
-                                if(time % 60<10){
-                                    task.startTime = String.valueOf(hour) + ":" + "0"+ String.valueOf(time % 60);
-                                }
-                                else{
-                                    task.startTime = String.valueOf(hour) + ":" + String.valueOf(time % 60);
-                                }
-                                // task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60 + task.getDuration());
-                                 
-                              
-                                if((time +task.getDuration())%60 <10){
-                                    task.endTime = String.valueOf(hour + (task.getDuration()+time) / 60) + ":" + "0"+ String.valueOf((time +task.getDuration())%60);
-                                }
-                                else{
-                                    task.endTime = String.valueOf(hour + (time+task.getDuration()) / 60) + ":" + String.valueOf((time +task.getDuration())%60);
-                                }
+                                task.startTime = LocalTime.of(hour, time%60) ;
+                                task.endTime= LocalTime.of(hour + (time+task.getDuration()) / 60, (time + task.getDuration())%60);
                                 time += task.getDuration();
                                 scheduleAnimalTasks.add(task);
-                                iterator.remove(); // remove task from animalTasks
+                                iterator.remove(); 
                                 
                             }
                      }
@@ -119,7 +104,7 @@ public class Schedule {
                 hour =0;
                 spillOver=0;
                 time=0;
-                while(hour<=max){
+                while(hour<=23){
                     Iterator<AnimalTask> iterator2 = animalTasks.iterator();
                     while(iterator2.hasNext()) {
                         AnimalTask task = iterator2.next();
@@ -131,21 +116,8 @@ public class Schedule {
                                 if(hour+task.getDuration()/60 <task.getMaxWindow()+task.getStartHour()){
                                     if(hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
  
-                                        if(time % 60<10){
-                                            task.startTime = String.valueOf(hour) + ":" + "0"+ String.valueOf(time % 60);
-                                        }
-                                        else{
-                                            task.startTime = String.valueOf(hour) + ":" + String.valueOf(time % 60);
-                                        }
-                                        // task.endTime = String.valueOf(hour + task.getDuration() / 60) + ":" + String.valueOf(time % 60 + task.getDuration());
-                                         
-                                      
-                                        if((time +task.getDuration())%60 <10){
-                                            task.endTime = String.valueOf(hour + (task.getDuration()+time) / 60) + ":" + "0"+ String.valueOf((time +task.getDuration())%60);
-                                        }
-                                        else{
-                                            task.endTime = String.valueOf(hour + (time+task.getDuration()) / 60) + ":" + String.valueOf((time +task.getDuration())%60);
-                                        }
+                                        task.startTime = LocalTime.of(hour, time%60) ;
+                                        task.endTime= LocalTime.of(hour + (time+task.getDuration()) / 60, (time + task.getDuration())%60);
                                         time += task.getDuration();
                                         scheduleAnimalTasks2.add(task);
                                         iterator2.remove(); // remove task from animalTasks
@@ -164,9 +136,43 @@ public class Schedule {
                 System.out.println("No schedule possible");
                 System.out.println("There is no space for the volunteer and Sara to do the following task(s):");
                 for (AnimalTask task : animalTasks) {
-                    System.out.println(task);
+                    leftOverTasks.add(task);
+                    System.out.println("* "+ task.getDescription() + "("+ task.getAnimal().getAnimalNickname()+ ")");
                 }
                 return;
+            }
+            int lastOneDone=-5;
+            int currentHour=0;
+            boolean help=false;
+            while(currentHour<24){
+                help=false;
+                for(AnimalTask task : scheduleAnimalTasks2){
+                    if(task.startTime.getHour()==currentHour){
+                        help=true;
+                    }
+                }
+                for(AnimalTask task : scheduleAnimalTasks){
+                    if(task.startTime.getHour()==currentHour){
+                        if(currentHour!=lastOneDone){
+                            if(help){
+                                System.out.println(currentHour+":00 [+ back up volunteer]");
+
+                            }
+                            else{
+                                System.out.println(currentHour+":00");
+                            }
+                            lastOneDone=currentHour;
+                        }
+                        System.out.println("* "+ task.getDescription() + "("+ task.getAnimal().getAnimalNickname()+ ")");
+                    }
+                }
+                for(AnimalTask task : scheduleAnimalTasks2){
+                    if(task.startTime.getHour()==currentHour){
+
+                        System.out.println("* "+ task.getDescription() + "("+ task.getAnimal().getAnimalNickname()+ ")");
+                    }
+                }
+                currentHour+=1;
             }
 
 
@@ -175,20 +181,56 @@ public class Schedule {
         
 
             // print out the startFirst map
-            System.out.println("First Schedule");
+            // System.out.println("First Schedule");
+            // int currentTime= -5;
+            
+            // int currentHour=0;
+            
+            // while(currentHour<24){
 
-            for (AnimalTask task : scheduleAnimalTasks) {
+
+            //     for(AnimalTask task : scheduleAnimalTasks.add){
+            //         if(task.getStartHour()==currentHour){
+            //             System.out.println("Animal ID: "+ task.getAnimal().getAnimalID()+" Task ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime + " Duration: "+ task.getDuration()+ " Start Hour: "+ task.getStartHour()+ " Max Window: "+ task.getMaxWindow());
+            //         }
+            //     }
+
                 
-                // if(currentTime!=task.startTime.charAt(0)){
-                //    System.out.println(task.startTime+":00");
-                //    currentTime=task.startTime.charAt(0);}
-               
-                System.out.println("Animal ID"+ task.getAnimal().getAnimalID()+" Task ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime + " Duration: "+ task.getDuration());
-            }
-            System.out.println("Assistant Schedule");
-            for(AnimalTask task : scheduleAnimalTasks2){
-                System.out.println("ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime);
-            }
+            //     currentHour+=1;
+            // }
+
+
+            // for (AnimalTask task : scheduleAnimalTasks) {
+            //     if(currentTime != task.startTime.getHour()){
+            //         currentTime = task.startTime.getHour();
+
+            //         boolean volunteerNeeded = false;
+            //         for(AnimalTask task2 : scheduleAnimalTasks2){
+            //             if(task2.startTime.getHour() == currentTime){
+            //                 volunteerNeeded = true;
+            //             }
+            //         }
+            //         if(volunteerNeeded){
+            //             System.out.println("Time: "+currentTime +":00" + "[+ backup volunteer]");
+            //         }else{ System.out.println("Time: "+currentTime +":00");
+            //         }
+            //     }
+            //     for(AnimalTask task2 : scheduleAnimalTasks2){
+            //         if(task2.startTime.getHour() == currentTime){
+            //             System.out.println("- "+ task2.getDescription()+ " Animal ID: "+ task2.getAnimal().getAnimalID()+" Task ID: "+ task2.getTaskID()+" STARTS AT: "+task2.startTime +" and ENDS AT: "+ task2.endTime + " Duration: "+ task2.getDuration()+ " Start Hour: "+ task2.getStartHour()+ " Max Window: "+ task2.getMaxWindow());
+            //         }
+            //     System.out.println( "- "+ task.getDescription() + "  Animal ID"+ task.getAnimal().getAnimalID()+" Task ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime + " Duration: "+ task.getDuration()+ " Start Hour: "+ task.getStartHour()+ " Max Window: "+ task.getMaxWindow());
+            // }
+
+
+
+
+
+
+            // System.out.println("Assistant Schedule");
+            // for(AnimalTask task : scheduleAnimalTasks2){
+            //     System.out.println(" Animal ID: "+ task.getTaskID()+" STARTS AT: "+task.startTime +" and ENDS AT: "+ task.endTime + " Start Hour: "+ task.getStartHour() + " Duration: "+ task.getDuration());
+            // }
 
 
             myConnect.close();

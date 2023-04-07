@@ -1,11 +1,15 @@
 package edu.ucalgary.oop;
 
+import java.time.LocalTime;
+
 public class AnimalTask extends Task {
     private Animal animal;
     private String description;
     private int duration;
-    public String startTime;
-    public String endTime;
+    public LocalTime startTime;
+    public LocalTime endTime;
+
+
 
     // Constructor
     public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow, int duration) {
