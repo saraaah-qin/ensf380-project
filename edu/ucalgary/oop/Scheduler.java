@@ -21,17 +21,17 @@ public class Scheduler {
     }
 
     // ARE YOU SURE WE WANT TO RETURN A STRING HERE?
-    public String getAnimalTaskList() {
+    public ArrayList<AnimalTask> getAnimalTaskList() {
         return this.animalTaskList;
     }
 
     // ARE YOU SURE WE WANT TO RETURN A STRING HERE?
-    public String getNonAnimalTaskList() {
+    public ArrayList<NonAnimalTask> getNonAnimalTaskList() {
         return this.nonAnimalTaskList;
     }
 
     // ARE YOU SURE WE WANT TO RETURN A STRING HERE?
-    public String getVolunteerList() {
+    public ArrayList<Volunteer> getVolunteerList() {
         return this.volunteerList;
     }
 

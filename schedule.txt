@@ -1,4 +1,4 @@
-0:00
++0:00
 * Kit feeding(Annie, Oliver and Mowgli)
 2:00
 * Kit feeding(Annie, Oliver and Mowgli)
@@ -44,4 +44,3 @@
 * Kit feeding(Annie, Oliver and Mowgli)
 * Mange treatment(Sunshine)
 * Give vitamin injection(Gatekeeper)
-
