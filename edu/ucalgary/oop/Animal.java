@@ -2,14 +2,18 @@ package edu.ucalgary.oop;
 
 public class Animal {
     private String animalNickname;
-    private String animalSpecies;
+    private AnimalSpecies animalSpecies;
     private int animalID;
+
+    String animalType;
+
+
 
     public Animal(int AnimalID, String AnimalNickname, String AnimalSpecies) {
         this.animalNickname = AnimalNickname;
-        this.animalSpecies = AnimalSpecies;
-        this.animalID = AnimalID;
-    }
+        this.animalSpecies = new AnimalSpecies(AnimalSpecies);
+        this.animalID = AnimalID;}
+       
 
     public void setAnimalID(int id) {
         this.animalID = id;
@@ -20,7 +24,7 @@ public class Animal {
     }
 
     public void setAnimalSpecies(String species) {
-        this.animalSpecies = species;
+        this.animalSpecies = new AnimalSpecies(species);
     }
 
     public int getAnimalID() {
@@ -31,7 +35,7 @@ public class Animal {
         return this.animalNickname;
     }
 
-    public String getAnimalSpecies() {
+    public AnimalSpecies getAnimalSpecies() {
         return this.animalSpecies;
     }
 }
