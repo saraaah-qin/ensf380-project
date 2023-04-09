@@ -45,4 +45,13 @@ private int feedingTime;
         }
         else{ throw new IllegalArgumentException("Invalid Animal Species");}
     }
+    public int getCleanTime() {
+        return cleanTime;
+    }
+    public int getPrepTime() {
+        return prepTime;
+    }
+    public int getFeedingTime() {
+        return feedingTime;
+    }
 }

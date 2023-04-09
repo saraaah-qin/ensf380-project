@@ -41,6 +41,8 @@ public class Schedule {
             animalQuery.close();
 
 
+
+
             List<AnimalTask> animalTasks = new ArrayList();
             ResultSet tasksQuery = statement.executeQuery(
 "SELECT TREATMENTS.AnimalID, TREATMENTS.TaskID, TREATMENTS.StartHour, TASKS.MaxWindow, TASKS.Description, TASKS.Duration "
@@ -61,9 +63,11 @@ public class Schedule {
 
             tasksQuery.close();
 
-
-            for (AnimalTask task1 : animalTasks) {
-                System.out.println("Start Hour: "+ task1.getStartHour()+ " Max Window: "+ task1.getMaxWindow()+ " Duration: "+ task1.getDuration()+ " Description: "+ task1.getDescription()+ " Animal ID: "+ task1.getAnimal().getAnimalID()+ " Animal Nickname: "+ task1.getAnimal().getAnimalNickname()+ " Animal Species: "+ task1.getAnimal().getAnimalSpecies());
+            for (Map.Entry<Integer, Animal> entry : animals.entrySet()) {
+                Animal animal = entry.getValue();
+                AnimalSpecies animalSpecies = animal.getAnimalSpecies();
+                int duration= animalSpecies.getCleanTime();
+                animalTasks.add(new AnimalTask(animal, "Cage Cleaning", 0, -999999, 24, duration));
             }
 
 
