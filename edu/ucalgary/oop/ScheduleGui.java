@@ -57,12 +57,12 @@ public class ScheduleGui extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, warning);
             }
 
-
+            // need to implement modifying the start hour of one or more treatments based on advice she receives
             if(result.startsWith("No schedule possible")){
 
             }
 
-            JOptionPane.showMessageDialog(this, "Schedule generated123");
+            JOptionPane.showMessageDialog(this, "Schedule generated");
             resultTextArea.setText(result);
 
             System.out.println(result);
