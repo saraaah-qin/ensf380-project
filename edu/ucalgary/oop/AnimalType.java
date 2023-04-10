@@ -14,4 +14,7 @@ public class AnimalType {
             feedingTimes= new int[]{0,1,2};
         }
     }
+    public int[] getFeedingTimes() {
+        return feedingTimes;
+    }
 }

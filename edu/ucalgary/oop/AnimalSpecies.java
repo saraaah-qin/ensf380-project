@@ -4,8 +4,8 @@ public class AnimalSpecies {
 private int prepTime;
 private int cleanTime;
 private AnimalType animalType;
-
 private int feedingTime;
+private String animalSpeciesString;
 
     AnimalSpecies(String AnimalSpecies){
         if(AnimalSpecies.equals("coyote")){
@@ -13,12 +13,14 @@ private int feedingTime;
             this.cleanTime=5;
             this.animalType= new AnimalType("crepuscular");
             this.feedingTime=5;
+            this.animalSpeciesString=AnimalSpecies;
         }
         else if(AnimalSpecies.equals("porcupine")){
             this.prepTime=0;
             this.cleanTime=10;
             this.feedingTime=5;
             this.animalType=new AnimalType("crepuscular");
+            this.animalSpeciesString=AnimalSpecies;
 
         }
         else if(AnimalSpecies.equals("fox")){
@@ -26,6 +28,7 @@ private int feedingTime;
             this.cleanTime=5;
             this.feedingTime=5;
             this.animalType=new AnimalType("nocturnal");
+            this.animalSpeciesString=AnimalSpecies;
 
         }
 
@@ -35,6 +38,7 @@ private int feedingTime;
             this.cleanTime=5;
             this.feedingTime=5;
             this.animalType=new AnimalType("nocturnal");
+            this.animalSpeciesString=AnimalSpecies;
 
         }
         else if(AnimalSpecies.equals("beaver")){
@@ -42,6 +46,7 @@ private int feedingTime;
             this.cleanTime=5;
             this.feedingTime=5;
             this.animalType=new AnimalType("diurnal");
+            this.animalSpeciesString=AnimalSpecies;
         }
         else{ throw new IllegalArgumentException("Invalid Animal Species");}
     }
@@ -53,5 +58,11 @@ private int feedingTime;
     }
     public int getFeedingTime() {
         return feedingTime;
+    }
+    public AnimalType getAnimalType() {
+        return animalType;
+    }
+    public String getAnimalSpeciesString() {
+        return animalSpeciesString;
     }
 }

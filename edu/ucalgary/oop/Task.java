@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-public class Task {
+public class Task implements Comparable<Task> {
     private int startHour;
     private int taskID;
     private int maxWindow;
@@ -35,6 +35,12 @@ public class Task {
 
     public int getMaxWindow() {
         return this.maxWindow;
+    }
+
+    @Override
+    public int compareTo(Task other) {
+        // TODO Auto-generated method stub
+        return Integer.compare(this.maxWindow, other.maxWindow);
     }
 
 }

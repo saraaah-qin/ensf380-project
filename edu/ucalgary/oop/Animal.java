@@ -5,7 +5,7 @@ public class Animal {
     private AnimalSpecies animalSpecies;
     private int animalID;
 
-    String animalType;
+    
 
 
 

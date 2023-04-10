@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.TreeSet;
 import org.w3c.dom.ranges.Range;
 
 public class Schedule {
+    ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
     private static List<AnimalTask> scheduleAnimalTasks = new ArrayList(); // primary scheduled list
     private static List<AnimalTask> scheduleAnimalTasks2 = new ArrayList(); // secondary scheduled list for the
                                                                             // assistant
@@ -22,6 +25,10 @@ public class Schedule {
                                                                      // that are not able to be scheduled
 
     public String generateSchedule() {
+        Map<Integer, boolean[]> animalFeedingPrepTable = new HashMap<>();
+        for(int i = 0; i < 24; i++) {
+            animalFeedingPrepTable.put(i, new boolean[]{false, false});
+        }
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -41,9 +48,10 @@ public class Schedule {
                 animals.put(animalQuery.getInt("AnimalID"), animal);
             }
 
-            animalQuery.close();
 
-            List<AnimalTask> animalTasks = new ArrayList();
+
+
+           
             ResultSet tasksQuery = statement.executeQuery(
                     "SELECT TREATMENTS.AnimalID, TREATMENTS.TaskID, TREATMENTS.StartHour, TASKS.MaxWindow, TASKS.Description, TASKS.Duration "
                             +
@@ -62,6 +70,14 @@ public class Schedule {
 
             tasksQuery.close();
 
+            for(Animal animalFeedingTaskCreation:animals.values()){
+                animalTasks.add(new AnimalTask(animalFeedingTaskCreation, "FEEDING ANIMALS", animalFeedingTaskCreation.getAnimalSpecies().getAnimalType().getFeedingTimes()[0], 11111, 3, animalFeedingTaskCreation.getAnimalSpecies().getFeedingTime()));
+                
+            }
+            sortAnimalTasks(); // first sort the animal tasks by max window
+
+
+
             for (Map.Entry<Integer, Animal> entry : animals.entrySet()) {
                 Animal animal = entry.getValue();
                 AnimalSpecies animalSpecies = animal.getAnimalSpecies();
@@ -69,30 +85,56 @@ public class Schedule {
                 animalTasks.add(new AnimalTask(animal, "Cage Cleaning", 0, -999999, 24, duration));
             }
 
+
+
+
+
+        
             int leftover = 0;
             int hour = 0;
             int spillOver = 0;
             int time = 0;
+            
             while (hour < 24) {
                 Iterator<AnimalTask> iterator = animalTasks.iterator();
-
+                
                 while (iterator.hasNext()) {
                     AnimalTask task = iterator.next();
+                    int expectedTime = 0;
 
                     if (time >= 60) {
                         break;
                     }
+                    int indexForSearch=5;
+                    if(task.getDescription().equals("FEEDING ANIMALS")){
+                        if(task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("coyote")){
+                            indexForSearch = 0;
+                        }
+                        else if(task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("fox")){
+                            indexForSearch = 1;
+                        }
+                        
+                        if(indexForSearch!= 5 && animalFeedingPrepTable.get(hour)[indexForSearch] == false){
+                            
+                            expectedTime=task.getAnimal().getAnimalSpecies().getPrepTime();
+                        }
+                    
+                    }
 
                     if (task.getStartHour() <= hour) {
-                        if (time + task.getDuration() <= 60) {
-                            if (hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
+                        if (time + task.getDuration() +expectedTime<= 60) {
+                            if (hour + task.getDuration()+expectedTime / 60 < task.getMaxWindow() + task.getStartHour()) {
 
                                 task.startTime = LocalTime.of(hour, time % 60);
-                                task.endTime = LocalTime.of(hour + (time + task.getDuration()) / 60,
+                                task.endTime = LocalTime.of(hour + (time + task.getDuration()+expectedTime) / 60,
                                         (time + task.getDuration()) % 60);
                                 time += task.getDuration();
                                 scheduleAnimalTasks.add(task);
+                                if(task.getDescription().equals("FEEDING ANIMALS")){
+                                    animalFeedingPrepTable.get(hour)[indexForSearch] = true;
+                                }
                                 iterator.remove();
+
 
                             }
                         }
@@ -144,11 +186,14 @@ public class Schedule {
                 for (AnimalTask task : animalTasks) {
                     leftOverTasks.add(task);
                     scheduleOutput
-                            .append("* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")")
-                            .append("\n");
+                            .append("* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")");
+                            scheduleOutput.append("\n");
                 }
                 return scheduleOutput.toString();
             }
+
+
+            
             int lastOneDone = -5;
             int currentHour = 0;
             boolean help = false;
@@ -170,16 +215,18 @@ public class Schedule {
                             }
                             lastOneDone = currentHour;
                         }
+
                         scheduleOutput.append(
-                                "* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")")
-                                .append("\n");
+                                task.startTime+"* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")");
+                                scheduleOutput.append("\n");
                     }
                 }
+                
                 for (AnimalTask task : scheduleAnimalTasks2) {
                     if (task.startTime.getHour() == currentHour) {
 
                         scheduleOutput.append(
-                                "* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")")
+                                task.startTime+"* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")")
                                 .append("\n");
                     }
                 }
@@ -272,4 +319,16 @@ public class Schedule {
             return e.getMessage();
         }
     }
+    public void sortAnimalTasks () {
+        Collections.sort(this.animalTasks, new Comparator<AnimalTask>() {
+            @Override
+            public int compare(AnimalTask thing1, AnimalTask thing2) {
+                return thing1.getMaxWindow()- thing2.getMaxWindow();
+            }
+
+
+        });
+    }
+
 }
+

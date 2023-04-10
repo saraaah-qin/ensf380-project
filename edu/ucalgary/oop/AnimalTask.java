@@ -43,5 +43,8 @@ public class AnimalTask extends Task {
     public int getDuration() {
         return this.duration;
     }
+    public int getMaxWindow() {
+        return super.getMaxWindow();
+    }
 
 }
