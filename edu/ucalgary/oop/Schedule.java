@@ -164,7 +164,7 @@ public class Schedule {
                     if (task.startTime.getHour() == currentHour) {
                         if (currentHour != lastOneDone) {
                             if (help) {
-                                scheduleOutput.append(currentHour + ":00 [+ back up volunteer]").append("\n");
+                                scheduleOutput.append(currentHour + ":00 [+ backup volunteer]").append("\n");
 
                             } else {
                                 scheduleOutput.append(currentHour + ":00").append("\n");

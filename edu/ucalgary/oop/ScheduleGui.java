@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class ScheduleGui extends JFrame implements ActionListener {
     private JLabel label;
@@ -40,9 +41,32 @@ public class ScheduleGui extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
             String result = schedule.generateSchedule();
-            JOptionPane.showMessageDialog(this, "Schedule generated");
+            Scanner search = new Scanner(result);
+            String msg = "";
+            boolean backup = false;
+            while(search.hasNextLine()){
+                String line = search.nextLine();
+                if(line.contains("[+ backup volunteer]")){
+                    backup = true;
+                    String[] data = line.split("\\s+");
+                    msg += data[0] + " ";
+                }
+            }
+            if(backup){
+                String warning = "Confirm backups have been contacted for these times: " + msg;
+                JOptionPane.showMessageDialog(this, warning);
+            }
+
+
+            if(result.startsWith("No schedule possible")){
+
+            }
+
+            JOptionPane.showMessageDialog(this, "Schedule generated123");
             resultTextArea.setText(result);
+
             System.out.println(result);
+
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("schedule.txt"))) {
                 writer.write(result);
                 writer.newLine();
