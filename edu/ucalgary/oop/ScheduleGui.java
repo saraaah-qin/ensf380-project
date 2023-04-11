@@ -1,3 +1,18 @@
+/**
+ * @author Sarah Qin
+ * @author Aiden Wong
+ * @version 3.0
+ * @since 1.0
+ */
+
+
+ /**
+  * This file acts as the java GUI for the schedule and contains the main that runs the program by calling the ScheduleGui.
+  * It contains the ScheduleGui class that extends JFrame and implements ActionListener. Sets the layout and buttons along with the 
+  * action listeners for the buttons. Uses text areas to display the results. Overides the actionPerformed method. Gets the schedule output and 
+  * writes it to a text file. Also uses string builder to make the results a string.
+  */
+
 package edu.ucalgary.oop;
 
 import javax.swing.*;
@@ -30,6 +45,10 @@ public class ScheduleGui extends JFrame implements ActionListener {
 
     List<AnimalTask> leftOver = schedule.getLeftOverTasks();
 
+    /**
+     * This is the constructor for the ScheduleGui class. Sets the title, size, default close operation, and location of the GUI.
+     * Sets the layout and adds the label, button, and scroll pane to the GUI.
+     */
     public ScheduleGui() {
 
         setTitle("Generate Schedule");
@@ -52,6 +71,10 @@ public class ScheduleGui extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * This method is used to get the schedule output and write it to a text file. Overides the actionPerformed method.
+     * @param e which is an ActionEvent
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -409,6 +432,12 @@ public class ScheduleGui extends JFrame implements ActionListener {
         // }
     }
 
+    /**
+     * This method is used to check if a string is an integer.
+     * Uses a try catch block. If it catches the NumberFormatException it returns false.
+     * @param str the string to be checked
+     * @return true if the string is an integer, false if it is not
+     */
     public static boolean isInteger(String str) {
         try {
             Integer.parseInt(str);
@@ -418,6 +447,10 @@ public class ScheduleGui extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * This is the main method. Used to create a new ScheduleGui object and set it to visible.
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         ScheduleGui gui = new ScheduleGui();
         gui.setVisible(true);

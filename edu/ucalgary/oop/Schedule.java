@@ -1,3 +1,16 @@
+/**
+ * @author David Rodriguez Barrios
+ * @author Sarah Qin
+ * @version 14.0
+ * @since 1.0
+ */
+ 
+ /**
+  * This class is used to create the schedule of the animal tasks.
+  * It also contains the methods to generate the schedule, get the schedule, and get the left over tasks.
+  * Uses the MySQL database to get the animal tasks. Additionally uses List, ArrayList, and HashMap to organize the animal tasks.
+  */
+
 package edu.ucalgary.oop;
 
 import java.sql.Connection;
@@ -24,10 +37,21 @@ public class Schedule {
                                                                               // assistant
     private static List<AnimalTask> leftOverTasks = new ArrayList<>(); // Tertiary scheduled list for the animal tasks
                                                                        // that are not able to be scheduled
-
+    /**
+     * This is the generateSchedule method is called to generate the schedule. Constructs the schedule.
+     */
     public Schedule() {
         generateSchedule();
     }
+    /**
+     * This method is used to generate the schedule of the animal tasks. First creates a hashmap used as an animalFeedingPrepTable.
+     * Then it creates a connection to the MySQL database. Creates statements to extract the animalQuery. Then it creates a hashmap for the animal objects.
+     * Uses the animalQuery to construct the animal objects and add them to the hashmap. Then it creates a statement to extract the tasksQuery. Uses the tasksQuery 
+     * to construct the animal tasks. It then sorts the animal tasks by max window and closes the connection to the database. Then it calls the sortAnimalTasks method which sorts by max window.
+     * It then iterates through the AnimalTask list and checks if the animal task can be scheduled with the given times. Finally adds all results to 
+     * an array list of strings called scheduleOutput while also incrementing hours.
+     * 
+     */
 
     public void generateSchedule() {
         Map<Integer, boolean[]> animalFeedingPrepTable = new HashMap<>();
@@ -269,6 +293,9 @@ public class Schedule {
         }
     }
 
+    /**
+     * This method sorts the animal tasks by the max window. Overrides the compare method.
+     */
     public void sortAnimalTasks() {
         Collections.sort(this.animalTasks, new Comparator<AnimalTask>() {
             @Override
@@ -350,22 +377,36 @@ public class Schedule {
 
     // }
 
+    /**
+     * This method returns a boolean value to indicate initialization status.
+     * @return boolean
+     */
     public boolean isInitialized() {
         return initialized;
     }
-
+    /**
+     * This method gets an ArrayList of AnimalTasks.
+     */
     public ArrayList<AnimalTask> getAnimalTasks() {
         return animalTasks;
     }
-
+    /**
+     * This method gets a List of AnimalTasks. 
+     */
     public List<AnimalTask> getScheduleAnimalTasks() {
         return scheduleAnimalTasks;
     }
 
+    /**
+     * This method gets a List of AnimalTasks2. 
+     */
     public List<AnimalTask> getScheduleAnimalTasks2() {
         return scheduleAnimalTasks2;
     }
 
+    /**
+     * This method gets a List of left over AnimalTasks. 
+     */
     public List<AnimalTask> getLeftOverTasks() {
         return leftOverTasks;
     }
