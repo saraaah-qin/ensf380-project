@@ -67,6 +67,14 @@ CREATE TABLE TREATMENTS (
 INSERT INTO TREATMENTS (AnimalID, TaskID, StartHour) VALUES
 (6, 1, 0),
 (6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
+(6, 1, 2),
 (6, 1, 4),
 (6, 1, 6),
 (6, 1, 8),
@@ -95,3 +103,4 @@ INSERT INTO TREATMENTS (AnimalID, TaskID, StartHour) VALUES
 (14, 10, 13),
 (14, 8, 13),
 (15, 8, 13);
+

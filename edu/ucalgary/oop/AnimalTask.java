@@ -6,10 +6,8 @@ public class AnimalTask extends Task {
     private Animal animal;
     private String description;
     private int duration;
-    public LocalTime startTime;
-    public LocalTime endTime;
-
-
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     // Constructor
     public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow, int duration) {
@@ -43,8 +41,29 @@ public class AnimalTask extends Task {
     public int getDuration() {
         return this.duration;
     }
+
     public int getMaxWindow() {
         return super.getMaxWindow();
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public LocalTime getStartTime() {
+        return this.startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return this.endTime;
+    }
+
+    public int getTaskID() {
+        return super.getTaskID();
     }
 
 }
