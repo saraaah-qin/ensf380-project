@@ -88,8 +88,23 @@ public class ScheduleGui extends JFrame implements ActionListener {
             }
         }
         else if(e.getSource() == modifybutton){
-
-            // MARKER HERE // 
+            String modifyText = modifyTextArea.getText();
+            String[] mods = modifyText.split("\n");
+            for(String mod : mods){
+                String[] modsplit = mod.split("\\s+");
+                int startHour = Integer.parseInt(modsplit[0].substring(0, modsplit[0].indexOf(":")));
+                int taskindex = Integer.parseInt(modsplit[1]);
+                // Need to figure out the method set up in order to change the hour for a given task here using the setters. 
+                // Just having trouble figuring out the right way the setters interact between methods
+            }
+            String result = schedule.generateSchedule();
+            resultTextArea.setText(result);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("schedule.txt"))) {
+                writer.write(result);
+                writer.newLine();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
