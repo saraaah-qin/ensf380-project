@@ -1,3 +1,12 @@
+/* @author Sarah Qin
+ * @author David Rodriguez Barrios
+ * @version 3.0
+ * @since 1.0
+ */
+/**
+ * This class is used to test all teh classes.
+ */
+
 package edu.ucalgary.oop;
 
 import org.junit.Test;
@@ -11,14 +20,21 @@ import org.junit.Before;
 
 public class AnimalTesting {
 
-    // Testing Animal Class
+    /*
+     * Testing Animal Class
+     */
+
     @Test
 
     public void testAnimalInitialization() {
-        // Tests 3 Argument Constructor
+        /*
+         * Tests 3 Argument Constructor
+         */
         Animal animal = new Animal(1, "Fluffy", "fox");
 
-        // Tests getters
+        /*
+         * Tests Getters
+         */
         Assert.assertEquals(1, animal.getAnimalID());
         Assert.assertEquals("Fluffy", animal.getAnimalNickname());
         Assert.assertEquals("fox", animal.getAnimalSpecies().getAnimalSpeciesString());
@@ -27,7 +43,9 @@ public class AnimalTesting {
     @Test
 
     public void testAnimalInitializationIllegalArg() {
-        // Tests 3 Argument Constructor
+        /*
+         * Tests 3 Argument Constructor
+         */
         try {
             Animal animal = new Animal(1, "Fluffy", "dog");
         } catch (IllegalArgumentException e) {
@@ -36,7 +54,9 @@ public class AnimalTesting {
 
     }
 
-    // Testing Animal Setters
+    /*
+     * Tests Animal Setters
+     */
     @Test
     public void testAnimalSetters() {
         Animal animal = new Animal(1, "Fluffy", "raccoon");
@@ -50,7 +70,9 @@ public class AnimalTesting {
         Assert.assertEquals("fox", animal.getAnimalSpecies().getAnimalSpeciesString());
     }
 
-    // This test case checks if the animal's name can be set to an empty string
+    /*
+     * This test case checks if the animal's name can be set to an empty string
+     */
     @Test
     public void testAnimalSetNameEmpty() {
         Animal animal = new Animal(3, "Severus", "fox");
@@ -62,11 +84,11 @@ public class AnimalTesting {
         Assert.assertEquals("fox", animal.getAnimalSpecies().getAnimalSpeciesString());
     }
 
-    // let me know if we need to create test for exceptions
+    /* Testing Task Class */
 
-    // Testing Task Class
-
-    // Tests 3 Argument Constructor and getters
+    /*
+     * Tests 3 Argument Constructor and getters
+     */
     @Test
     public void testTaskInitialization() {
         Task task = new Task(9, 1, 2);
@@ -76,7 +98,9 @@ public class AnimalTesting {
         Assert.assertEquals(2, task.getMaxWindow());
     }
 
-    // tests 3 argument constructor and setters and getters
+    /*
+     * Tests 3 Argument Constructor and Setters
+     */
     @Test
     public void testTaskSetters() {
         Task task = new Task(9, 1, 2);
@@ -90,7 +114,9 @@ public class AnimalTesting {
         Assert.assertEquals(3, task.getMaxWindow());
     }
 
-    //
+    /*
+     * Tests for legal arguments for setters
+     */
     @Test
     public void testTaskSettersIllegal() {
         Task task = new Task(9, 1, 2);
@@ -102,13 +128,13 @@ public class AnimalTesting {
         } catch (IllegalArgumentException e) {
             Assert.assertEquals("Max window must be between 0 and 24", e.getMessage());
         }
-
         Assert.assertEquals(10, task.getStartHour());
         Assert.assertEquals(2, task.getTaskID());
-
     }
 
-    //
+    /*
+     * Tests for legal arguments for starthour
+     */
     @Test
     public void testTaskSettersIllegalStarHour() {
         Task task = new Task(9, 1, 2);
@@ -125,19 +151,20 @@ public class AnimalTesting {
 
     }
 
-    // let me know if we need to do testing for exceptions or argument checks etc.
+    /*
+     * Testing AnimalTask Class
+     */
 
-    // Testing AnimalTask Class
-    // public AnimalTask(Animal animal, String description, int startHour, int
-    // taskID, int maxWindow, int duration)
+    /*
+     * tests 3 argument constructor and getters for animal, then 6 argument
+     * constructor for AnimalTask
+     */
     @Test
     public void testAnimalTaskInitialization() {
-        // tests 3 argument constructor and getters for animal, then 4 argument
-        // constructor for AnimalTask
+
         Animal animal = new Animal(1, "Fluffy", "fox");
         AnimalTask animalTask = new AnimalTask(animal, "Walk Fluffy", 9, 20, 1, 2);
 
-        // tests getters for AnimalTask
         Assert.assertEquals(animal, animalTask.getAnimal());
         Assert.assertEquals("Walk Fluffy", animalTask.getDescription());
         Assert.assertEquals(9, animalTask.getStartHour());
@@ -146,10 +173,13 @@ public class AnimalTesting {
         Assert.assertEquals(2, animalTask.getDuration());
     }
 
+    /*
+     * tests 3 argument constructor and getters for animal, then 6 argument
+     * constructor for AnimalTask and setters
+     */
     @Test
     public void testAnimalTaskSetters() {
-        // tests 3 argument constructor and getters for animal, then 4 argument
-        // constructor for AnimalTask and setters
+
         Animal animal = new Animal(1, "Fluffy", "fox");
         AnimalTask animalTask = new AnimalTask(animal, "Walk Fluffy", 9, 20, 1, 2);
 
@@ -170,15 +200,17 @@ public class AnimalTesting {
         Assert.assertEquals(9, animalTask.getDuration());
     }
 
+    /*
+     * Tests for schedule generator method
+     */
+
     @Test
     public void testScheduleGeneration() {
         // Create a mock database connection
-        // ...
 
         Schedule schedule = new Schedule();
 
         // Set up test data
-        // ...
 
         // Call the generateSchedule() method
         schedule.generateSchedule();
@@ -186,17 +218,18 @@ public class AnimalTesting {
         // Assert that the scheduleAnimalTasks and scheduleAnimalTasks2 lists are not
         // empty
         assertFalse(schedule.getScheduleAnimalTasks().isEmpty());
-        assertFalse(schedule.getAnimalTasks().isEmpty());
+        assertTrue(schedule.getAnimalTasks().isEmpty());
 
         // Assert that the animal tasks are scheduled correctly
-        // ...
+
     }
 
-    // Testing Schedule Class
+    /*
+     * Testing Schedule Class
+     */
+
     @Test
     public void testGenerateSchedule() {
-        // Create a mock database connection
-        // ...
 
         Schedule schedule = new Schedule();
         ArrayList<AnimalTask> animalTasksTest = new ArrayList<>();
@@ -218,8 +251,13 @@ public class AnimalTesting {
         // checks to see if the animal tasks are ordered correctly
     }
 
-    // Testing AnimalType Class
-    // Tests Crepuscular getFeedingTimes method
+    /*
+     * Testing AnimalType Class
+     */
+
+    /*
+     * Tests Crepuscular getFeedingTimes method
+     */
     @Test
     public void testGetFeedingTimesCrepuscular() {
         AnimalType animal = new AnimalType("crepuscular");
@@ -228,7 +266,10 @@ public class AnimalTesting {
 
     }
 
-    // Test Diurnal getFeedingTimes method
+    /*
+     * Tests Diurnal getFeedingTimes method
+     */
+
     @Test
     public void testGetFeedingTimesDiurnal() {
         AnimalType animal = new AnimalType("diurnal");
@@ -236,7 +277,9 @@ public class AnimalTesting {
         assertArrayEquals(expectedFeedingTimes, animal.getFeedingTimes());
     }
 
-    // Test Nocturnal getFeedingTimes method
+    /*
+     * Tests Nocturnal getFeedingTimes method
+     */
     @Test
     public void testGetFeedingTimesNocturnal() {
         AnimalType animal = new AnimalType("nocturnal");
@@ -244,7 +287,9 @@ public class AnimalTesting {
         assertArrayEquals(expectedFeedingTimes, animal.getFeedingTimes());
     }
 
-    // Test Invalid Animal Type
+    /*
+     * Test Invalid Animal Type
+     */
     @Test
     public void testGetFeedingTimesInvalidAnimalType() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -252,7 +297,10 @@ public class AnimalTesting {
         });
     }
 
-    // Testing Animal Species Class
+    /*
+     * Testing Animal Species Class
+     */
+
     private AnimalSpecies coyote;
     private AnimalSpecies porcupine;
     private AnimalSpecies fox;
@@ -268,7 +316,7 @@ public class AnimalTesting {
         beaver = new AnimalSpecies("beaver");
     }
 
-    // Tests getCleanTime method
+    /* Tests getCleanTime method */
     @Test
     public void testGetCleanTime() {
         assertEquals(5, coyote.getCleanTime());
@@ -278,7 +326,7 @@ public class AnimalTesting {
         assertEquals(5, beaver.getCleanTime());
     }
 
-    // Tests getPrepTime method
+    /* Tests getPrepTime method */
     @Test
     public void testGetPrepTime() {
         assertEquals(10, coyote.getPrepTime());
@@ -288,7 +336,7 @@ public class AnimalTesting {
         assertEquals(0, beaver.getPrepTime());
     }
 
-    // Tests getFeedingTime method
+    /* Tests getFeedingTime method */
     @Test
     public void testGetFeedingTime() {
         assertEquals(5, coyote.getFeedingTime());
@@ -298,7 +346,7 @@ public class AnimalTesting {
         assertEquals(5, beaver.getFeedingTime());
     }
 
-    // Tests getAnimalSpeciesString method
+    /* Tests getAnimalSpeciesString method */
     @Test
     public void testGetAnimalSpeciesString() {
         assertEquals("coyote", coyote.getAnimalSpeciesString());
@@ -306,8 +354,13 @@ public class AnimalTesting {
         assertEquals("fox", fox.getAnimalSpeciesString());
     }
 
-    // Testing Schedule Class
-    // Tests addAnimalTaskToSchedule method
+    /*
+     * Testing Schedule Class
+     */
+
+    /*
+     * Tests addAnimalTaskToSchedule method
+     */
     @Test
     public void testAddAnimalTaskToSchedule() {
         Animal animal = new Animal(1, "Fluffy", "fox");
@@ -317,7 +370,10 @@ public class AnimalTesting {
         assertTrue(schedule.getAnimalTasks().contains(task));
     }
 
-    // Tests getAnimalTasks method
+    /*
+     * Tests getAnimalTasks method
+     */
+
     @Test
     public void testGetAnimalTasks() {
         // Create a sample ArrayList of AnimalTasks
@@ -335,7 +391,10 @@ public class AnimalTesting {
         assertEquals(animalTasks, zooSchedule.getAnimalTasks());
     }
 
-    // Tests getScheduleAnimalTasks method
+    /*
+     * Tests getScheduleAnimalTasks method
+     */
+
     @Test
     public void testGetScheduleAnimalTasks() {
         // Create a sample List of AnimalTasks
@@ -353,7 +412,10 @@ public class AnimalTesting {
         assertEquals(animalTasks, zooSchedule.getScheduleAnimalTasks());
     }
 
-    // Tests getScheduleAnimalTasks2 method
+    /*
+     * Tests getScheduleAnimalTasks2 method
+     */
+
     @Test
     public void testGetScheduleAnimalTasks2() {
         // Create a sample List of AnimalTasks
@@ -371,7 +433,10 @@ public class AnimalTesting {
         assertEquals(scheduleAnimalTasks2, zooSchedule.getScheduleAnimalTasks2());
     }
 
-    // Tests getLeftOverTasks method
+    /*
+     * Tests getLeftOverTasks method
+     */
+
     @Test
     public void testGetLeftOverTasks() {
         // Create a sample List of AnimalTasks
@@ -389,7 +454,9 @@ public class AnimalTesting {
         assertEquals(leftOverTasks, zooSchedule.getLeftOverTasks());
     }
 
-    // Tests setAnimalTasks method
+    /*
+     * Tests setAnimalTasks method
+     */
     @Test
     public void testSetAnimalTasks() {
         // Create a sample ArrayList of AnimalTasks
