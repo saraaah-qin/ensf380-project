@@ -17,12 +17,28 @@ import java.util.TreeSet;
 import org.w3c.dom.ranges.Range;
 
 public class Schedule {
-    ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
+    private static ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
     private static List<AnimalTask> scheduleAnimalTasks = new ArrayList(); // primary scheduled list
     private static List<AnimalTask> scheduleAnimalTasks2 = new ArrayList(); // secondary scheduled list for the
                                                                             // assistant
     private static List<AnimalTask> leftOverTasks = new ArrayList(); // Tertiary scheduled list for the animal tasks
                                                                      // that are not able to be scheduled
+
+    public static ArrayList<AnimalTask> getAnimalTasks(){
+        return animalTasks;
+    }
+
+    public static List<AnimalTask> getScheduleAnimalTasks(){
+        return scheduleAnimalTasks;
+    }
+
+    public static List<AnimalTask> getScheduleAnimalTask2(){
+        return scheduleAnimalTasks2;
+    }
+
+    public static List<AnimalTask> getLeftOverTasks(){
+        return leftOverTasks;
+    }
 
     public String generateSchedule() {
         Map<Integer, boolean[]> animalFeedingPrepTable = new HashMap<>();
