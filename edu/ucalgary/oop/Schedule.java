@@ -39,8 +39,6 @@ public class Schedule {
                                                                        // that are not able to be scheduled
     /**
      * This is the generateSchedule method is called to generate the schedule. Constructs the schedule.
-     * @param void
-     * @return Schedule object
      */
     public Schedule() {
         generateSchedule();
@@ -53,8 +51,6 @@ public class Schedule {
      * It then iterates through the AnimalTask list and checks if the animal task can be scheduled with the given times. Finally adds all results to 
      * an array list of strings called scheduleOutput while also incrementing hours.
      * 
-     * @param void
-     * @return array list of strings called scheduleOutput
      */
 
     public void generateSchedule() {
@@ -299,10 +295,6 @@ public class Schedule {
 
     /**
      * This method sorts the animal tasks by the max window. Overrides the compare method.
-     * @param thing1
-     * @param thing2
-     * @return the difference between the max window of the two tasks
-     * 
      */
     public void sortAnimalTasks() {
         Collections.sort(this.animalTasks, new Comparator<AnimalTask>() {
@@ -387,7 +379,6 @@ public class Schedule {
 
     /**
      * This method returns a boolean value to indicate initialization status.
-     * @param void
      * @return boolean
      */
     public boolean isInitialized() {
@@ -395,16 +386,12 @@ public class Schedule {
     }
     /**
      * This method gets an ArrayList of AnimalTasks.
-     * @param void
-     * @return ArrayList<AnimalTask>
      */
     public ArrayList<AnimalTask> getAnimalTasks() {
         return animalTasks;
     }
     /**
      * This method gets a List of AnimalTasks. 
-     * @param void
-     * @return List<AnimalTask>
      */
     public List<AnimalTask> getScheduleAnimalTasks() {
         return scheduleAnimalTasks;
@@ -412,8 +399,6 @@ public class Schedule {
 
     /**
      * This method gets a List of AnimalTasks2. 
-     * @param void
-     * @return List<AnimalTask>
      */
     public List<AnimalTask> getScheduleAnimalTasks2() {
         return scheduleAnimalTasks2;
@@ -421,8 +406,6 @@ public class Schedule {
 
     /**
      * This method gets a List of left over AnimalTasks. 
-     * @param void
-     * @return List<AnimalTask>
      */
     public List<AnimalTask> getLeftOverTasks() {
         return leftOverTasks;

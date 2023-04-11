@@ -22,7 +22,6 @@ public class Animal {
      * @param AnimalID The animal's ID.
      * @param AnimalNickname The animal's nickname.
      * @param AnimalSpecies The animal's species.
-     * @return Animal object.
      */   
 
     public Animal(int AnimalID, String AnimalNickname, String AnimalSpecies) {
@@ -33,7 +32,6 @@ public class Animal {
     /**
      * This method is used to set the animal's ID.
      * @param id
-     * @return void
      */
     public void setAnimalID(int id) {
         this.animalID = id;
@@ -41,7 +39,6 @@ public class Animal {
     /**
      * This method is used to set the animal's nickname.
      * @param name
-     * @return void
      */
     public void setAnimalNickname(String name) {
         this.animalNickname = name;
@@ -49,14 +46,12 @@ public class Animal {
     /**
      * This method is used to set the animal's species.
      * @param species
-     * @return void
      */
     public void setAnimalSpecies(String species) {
         this.animalSpecies = new AnimalSpecies(species);
     }
     /**
      * This method is used to get the animal's ID.
-     * @param void
      * @return int
      */
     public int getAnimalID() {
@@ -64,7 +59,6 @@ public class Animal {
     }
     /**
      * This method is used to get the animal's nickname.
-     * @param void
      * @return String
      */
     public String getAnimalNickname() {
@@ -72,7 +66,6 @@ public class Animal {
     }
     /**
      * This method is used to get the animal's species.
-     * @param void
      * @return AnimalSpecies
      */
     public AnimalSpecies getAnimalSpecies() {

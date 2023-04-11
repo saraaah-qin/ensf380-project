@@ -23,7 +23,6 @@ public class Task implements Comparable<Task> {
      * @param taskID The task's ID.
      * @param startHour The task's start hour.
      * @param maxWindow The task's maximum window.
-     * @return Task object.
      */
     public Task(int taskID, int startHour, int maxWindow) {
         this.startHour = startHour;
@@ -34,7 +33,6 @@ public class Task implements Comparable<Task> {
     /**
      * This method is used to set the task's start hour.
      * @param startHour
-     * @return void
      */
     public void setStartHour(int startHour) {
         this.startHour = startHour;
@@ -43,7 +41,6 @@ public class Task implements Comparable<Task> {
     /**
      * This method is used to set the task's ID.
      * @param taskID
-     * @return void
      */
     public void setTaskID(int taskID) {
         this.taskID = taskID;
@@ -52,7 +49,6 @@ public class Task implements Comparable<Task> {
     /**
      * This method is used to set the task's maximum window.
      * @param maxWindow
-     * @return void
      */
     public void setMaxWindow(int maxWindow) {
         this.maxWindow = maxWindow;
@@ -60,7 +56,6 @@ public class Task implements Comparable<Task> {
 
     /**
      * This method is used to get the task's start hour.
-     * @param void
      * @return int
      */
     public int getStartHour() {
@@ -69,7 +64,6 @@ public class Task implements Comparable<Task> {
 
     /**
      * This method is used to get the task's ID.
-     * @param void
      * @return int
      */
     public int getTaskID() {
@@ -78,7 +72,6 @@ public class Task implements Comparable<Task> {
 
     /**
      * This method is used to get the task's maximum window.
-     * @param void
      * @return int
      */
     public int getMaxWindow() {

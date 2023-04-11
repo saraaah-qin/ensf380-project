@@ -86,7 +86,6 @@ private String animalSpeciesString;
     }
     /**
      * This method is used to get the animal's clean time.
-     * @param void
      * @return int
      */
     public int getCleanTime() {
@@ -94,7 +93,6 @@ private String animalSpeciesString;
     }
     /**
      * This method is used to get the animal's prep time.
-     * @param void
      * @return int
      */
     public int getPrepTime() {
@@ -102,7 +100,6 @@ private String animalSpeciesString;
     }
     /**
      * This method is used to get the animal's feeding time.
-     * @param void
      * @return int
      */
     public int getFeedingTime() {
@@ -110,7 +107,6 @@ private String animalSpeciesString;
     }
     /**
      * This method is used to get the animal's type.
-     * @param void
      * @return AnimalType
      */
     public AnimalType getAnimalType() {
@@ -118,7 +114,6 @@ private String animalSpeciesString;
     }
     /**
      * This method is used to get the animal's species string.
-     * @param void
      * @return String
      */
     public String getAnimalSpeciesString() {

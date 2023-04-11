@@ -30,7 +30,6 @@ public class AnimalType {
     }
     /**
      * This method is used to get the feeding times of the animal.
-     * @param void
      * @return int[]
      */
     public int[] getFeedingTimes() {

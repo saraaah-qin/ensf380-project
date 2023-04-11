@@ -29,7 +29,6 @@ public class AnimalTask extends Task {
      * @param taskID The task's ID.
      * @param maxWindow The task's maximum window.
      * @param duration The task's duration.
-     * @return AnimalTask object.
      */
     public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow, int duration) {
         super(taskID, startHour, maxWindow);
@@ -41,7 +40,6 @@ public class AnimalTask extends Task {
     /**
      * This method is used to set the animal's species.
      * @param animal
-     * @return void
      */
     public void setAnimal(Animal animal) {
         this.animal = animal;
@@ -49,7 +47,6 @@ public class AnimalTask extends Task {
     /**
      * This method is used to set the task's description.
      * @param description
-     * @return void
      */
     public void setDescription(String description) {
         this.description = description;
@@ -57,22 +54,18 @@ public class AnimalTask extends Task {
     /**
      * This method is used to set the task's duration.
      * @param duration
-     * @return void
      */
     public void setDuration(int duration) {
         this.duration = duration;
     }
     /**
      * This method is used to get the animal's species.
-     * @param void
-     * @return Animal
      */
     public Animal getAnimal() {
         return this.animal;
     }
     /**
      * This method is used to get the task's description.
-     * @param void
      * @return String
      */
     public String getDescription() {
@@ -80,7 +73,6 @@ public class AnimalTask extends Task {
     }
     /**
      * This method is used to get the task's duration.
-     * @param void
      * @return int
      */
     public int getDuration() {
@@ -88,7 +80,6 @@ public class AnimalTask extends Task {
     }
     /**
      * This method is used to get the task's start time.
-     * @param void
      * @return int
      */
     public int getMaxWindow() {
@@ -97,7 +88,6 @@ public class AnimalTask extends Task {
     /**
      * This method is used to get the task's start time.
      * @param startTime
-     * @return void
      */
     public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
@@ -105,14 +95,12 @@ public class AnimalTask extends Task {
     /**
      * This method is used to get the task's end time.
      * @param endTime
-     * @return void
      */
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
     /**
      * This method is used to get the task's start time.
-     * @param void
      * @return LocalTime
      */
     public LocalTime getStartTime() {
@@ -120,7 +108,6 @@ public class AnimalTask extends Task {
     }
     /**
      * This method is used to get the task's end time.
-     * @param void
      * @return LocalTime
      */
     public LocalTime getEndTime() {
@@ -128,7 +115,6 @@ public class AnimalTask extends Task {
     }
     /**
      * This method is used to get the task's ID.
-     * @param void
      * @return int
      */
     public int getTaskID() {
