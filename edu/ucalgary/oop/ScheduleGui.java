@@ -7,13 +7,14 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ScheduleGui extends JFrame implements ActionListener {
     private JLabel label;
@@ -30,6 +31,7 @@ public class ScheduleGui extends JFrame implements ActionListener {
 
     List<AnimalTask> leftOver = schedule.getLeftOverTasks();
 
+    // Constructor
     public ScheduleGui() {
 
         setTitle("Generate Schedule");
@@ -56,8 +58,6 @@ public class ScheduleGui extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == button) {
-
-            int bestHour;
 
             Map<Integer, Integer> timeLeft = new HashMap<>();
 
@@ -134,6 +134,7 @@ public class ScheduleGui extends JFrame implements ActionListener {
                         if (timeLeft.get(hour) + task.getDuration() <= 60) {
                             timeLeft.put(hour, timeLeft.get(hour) + task.getDuration());
                             task.setStartHour(hour);
+                            setValue(task.getTreatmentID(), hour);
                             task.setStartTime(LocalTime.of(hour, (timeLeft.get(hour) - task.getDuration()) % 60));
                             task.setEndTime(LocalTime.of(hour, timeLeft.get(hour) % 60));
                             scheduleAnimalTasks.add(task);
@@ -144,6 +145,7 @@ public class ScheduleGui extends JFrame implements ActionListener {
 
                             timeLeft1.put(hour, timeLeft1.get(hour) + task.getDuration());
                             task.setStartHour(hour);
+                            setValue(task.getTreatmentID(), hour);
                             task.setStartTime(LocalTime.of(hour, (timeLeft1.get(hour) - task.getDuration()) % 60));
                             task.setEndTime(LocalTime.of(hour + (timeLeft1.get(hour)) / 60, timeLeft1.get(hour) % 60));
                             scheduledAnimalTasks2.add(task);
@@ -228,6 +230,7 @@ public class ScheduleGui extends JFrame implements ActionListener {
                         }
                         timeLeft.put(hour, timeLeft.get(hour) + task.getDuration());
                         task.setStartHour(hour);
+                        setValue(task.getTreatmentID(), hour);
                         task.setStartTime(LocalTime.of(hour, (timeLeft.get(hour) - task.getDuration()) % 60));
                         task.setEndTime(LocalTime.of(hour + (timeLeft.get(hour) / 60), timeLeft.get(hour) % 60));
                         scheduleAnimalTasks.add(task);
@@ -264,6 +267,7 @@ public class ScheduleGui extends JFrame implements ActionListener {
                         }
                         timeLeft.put(hour, timeLeft.get(hour) + task.getDuration());
                         task.setStartHour(hour);
+                        setValue(task.getTreatmentID(), hour);
                         task.setStartTime(LocalTime.of(hour, (timeLeft.get(hour) - task.getDuration() % 60)));
                         task.setEndTime(LocalTime.of(hour + (timeLeft.get(hour) / 60), timeLeft.get(hour) % 60));
                         scheduleAnimalTasks.add(task);
@@ -271,77 +275,15 @@ public class ScheduleGui extends JFrame implements ActionListener {
 
                         // update time left in timeLeft
                         // put the task in scheduledAnimalTasks2 or scheduleAnimalTasks
-
                     }
                     for (AnimalTask task : temp) {
                         scheduledAnimalTasks2.remove(task);
                     }
-                    // List<String> scheduleOutput = new ArrayList<>();
-                    // int lastOneDone = -5;
-                    // int currentHour = 0;
-                    // boolean help = false;
-                    // while (currentHour <= 23) {
-                    // help = false;
-                    // for (AnimalTask task : scheduledAnimalTasks2) {
-                    // if (task.getStartTime().getHour() == currentHour) {
-                    // help = true;
-                    // }
-                    // }
-                    // for (AnimalTask task : scheduleAnimalTasks) {
-                    // if (task.getStartTime().getHour() == currentHour) {
-                    // if (currentHour != lastOneDone) {
-                    // if (help) {
-                    // scheduleOutput.add(currentHour + ":00 [+ back up volunteer]\n");
-
-                    // } else {
-                    // scheduleOutput.add(currentHour + ":00\n");
-                    // }
-                    // lastOneDone = currentHour;
-                    // }
-
-                    // scheduleOutput
-                    // .add("* " + task.getStartTime() + " " + task.getDescription() + "("
-                    // + task.getAnimal().getAnimalNickname()
-                    // + ")\n");
-                    // }
-                    // }
-
-                    // for (AnimalTask task : scheduledAnimalTasks2) {
-                    // if (task.getStartTime().getHour() == currentHour) {
-
-                    // scheduleOutput
-                    // .add("* " + task.getStartTime() + " " + task.getDescription() + "("
-                    // + task.getAnimal().getAnimalNickname()
-                    // + ")\n");
-                    // }
-                    // }
-                    // currentHour += 1;
-                    // }
-                    // results = scheduleOutput;
 
                 }
 
             }
         }
-
-        // StringBuilder sb = new StringBuilder();
-        // for (int s : timeList) {
-        // sb.append(s);
-        // sb.append("\n");
-        // }
-        // String result = sb.toString();
-        // resultTextArea.setText(result);
-
-        // List<String> updated = schedule.backUp(startHour, taskDescription,
-        // animalName, timeList);
-
-        // StringBuilder sb2 = new StringBuilder();
-        // for (String s : updated) {
-        // sb2.append(s);
-        // sb2.append("\n");
-        // }
-        // String result2 = sb2.toString();
-        // resultTextArea.setText(result2);
 
         // THIS IS IF EVERYTHING IS FINE THEN IT PRINTS THE SCHEDULE
         // JUST PRINTS
@@ -401,20 +343,21 @@ public class ScheduleGui extends JFrame implements ActionListener {
             ex.printStackTrace();
         }
 
-        // for (int m = 0; m < taskDescription.size(); m++) {
-        // System.out.println(startHour.get(m));
-        // System.out.println(taskDescription.get(m));
-        // System.out.println(animalName.get(m));
-        // System.out.println(timeList.get(m));
-        // }
     }
 
-    public static boolean isInteger(String str) {
+    public void setValue(int treatmentID, int newStartHour) {
         try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection myConnect = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "oop",
+                    "password");
+            Statement statement = myConnect.createStatement();
+            statement.executeUpdate("UPDATE TREATMENTS SET StartHour = " + newStartHour + " WHERE TreatmentID = "
+                    + treatmentID + ";");
+            // myConnect.commit();
+            myConnect.close();
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -422,4 +365,5 @@ public class ScheduleGui extends JFrame implements ActionListener {
         ScheduleGui gui = new ScheduleGui();
         gui.setVisible(true);
     }
+
 }

@@ -8,6 +8,7 @@ public class AnimalTask extends Task {
     private int duration;
     private LocalTime startTime;
     private LocalTime endTime;
+    private int treatmentID;
 
     // Constructor
     public AnimalTask(Animal animal, String description, int startHour, int taskID, int maxWindow, int duration) {
@@ -20,6 +21,7 @@ public class AnimalTask extends Task {
     // Getters and setters
     public void setAnimal(Animal animal) {
         this.animal = animal;
+
     }
 
     public void setDescription(String description) {
@@ -27,7 +29,17 @@ public class AnimalTask extends Task {
     }
 
     public void setDuration(int duration) {
+        if (duration < 0 || duration > 60)
+            throw new IllegalArgumentException("Duration must be greater than 0 and less than 60");
         this.duration = duration;
+    }
+
+    public void setTreatmentID(int treatmentID) {
+        this.treatmentID = treatmentID;
+    }
+
+    public int getTreatmentID() {
+        return this.treatmentID;
     }
 
     public Animal getAnimal() {
@@ -47,6 +59,7 @@ public class AnimalTask extends Task {
     }
 
     public void setStartTime(LocalTime startTime) {
+
         this.startTime = startTime;
     }
 

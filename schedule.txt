@@ -14,14 +14,10 @@
 * 01:30 Cage Cleaning(Javelin)
 * 01:40 Cage Cleaning(Gatekeeper)
 * 01:50 Cage Cleaning(Sunshine)
-2:00 [+ back up volunteer]
+2:00
 * 02:00 Kit feeding(Annie, Oliver and Mowgli)
 * 02:30 Kit feeding(Annie, Oliver and Mowgli)
-* 02:00 Kit feeding(Annie, Oliver and Mowgli)
-* 02:30 Kit feeding(Annie, Oliver and Mowgli)
-3:00 [+ back up volunteer]
-* 03:00 Kit feeding(Annie, Oliver and Mowgli)
-* 03:30 Kit feeding(Annie, Oliver and Mowgli)
+3:00
 * 03:00 Kit feeding(Annie, Oliver and Mowgli)
 * 03:30 Kit feeding(Annie, Oliver and Mowgli)
 4:00
@@ -32,10 +28,13 @@
 * 04:50 Cage Cleaning(Spot)
 5:00
 * 05:00 Kit feeding(Annie, Oliver and Mowgli)
+* 05:30 Kit feeding(Annie, Oliver and Mowgli)
 6:00
 * 06:00 Flush neck wound(Spike)
 * 06:25 Administer antibiotics(Spike)
 * 06:30 Kit feeding(Annie, Oliver and Mowgli)
+7:00
+* 07:00 Kit feeding(Annie, Oliver and Mowgli)
 8:00
 * 08:00 Kit feeding(Annie, Oliver and Mowgli)
 10:00
@@ -47,8 +46,8 @@
 * 13:25 Inspect broken leg(Biter)
 * 13:30 Inspect broken leg(Spin)
 * 13:35 Mange treatment(Spin)
-* 13:50 Give vitamin injection(Pencil)
-* 13:55 Give vitamin injection(Bitter)
+* 13:50 Give vitamin injection(Bitter)
+* 13:55 Give vitamin injection(Pencil)
 14:00
 * 14:00 Kit feeding(Annie, Oliver and Mowgli)
 * 14:30 Mange treatment(Spot)

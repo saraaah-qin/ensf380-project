@@ -5,16 +5,14 @@ public class Animal {
     private AnimalSpecies animalSpecies;
     private int animalID;
 
-    
-
-
-
+    // Constructor
     public Animal(int AnimalID, String AnimalNickname, String AnimalSpecies) {
         this.animalNickname = AnimalNickname;
         this.animalSpecies = new AnimalSpecies(AnimalSpecies);
-        this.animalID = AnimalID;}
-       
+        this.animalID = AnimalID;
+    }
 
+    // Getters and setters
     public void setAnimalID(int id) {
         this.animalID = id;
     }

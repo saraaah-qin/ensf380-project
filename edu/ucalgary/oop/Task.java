@@ -10,11 +10,22 @@ public class Task implements Comparable<Task> {
         this.startHour = startHour;
         this.taskID = taskID;
         this.maxWindow = maxWindow;
+        if (startHour < 0 || startHour > 23) {
+            throw new IllegalArgumentException("Start hour must be between 0 and 23");
+        }
+        if (maxWindow <= 0 || maxWindow > 24) {
+            throw new IllegalArgumentException("Max window must be between 0 and 24");
+        }
+
     }
 
     // Getters and setters
     public void setStartHour(int startHour) {
+        if (startHour < 0 || startHour > 23) {
+            throw new IllegalArgumentException("Start hour must be between 0 and 23");
+        }
         this.startHour = startHour;
+
     }
 
     public void setTaskID(int taskID) {
@@ -22,6 +33,10 @@ public class Task implements Comparable<Task> {
     }
 
     public void setMaxWindow(int maxWindow) {
+        if (maxWindow <= 0 || maxWindow > 24) {
+            throw new IllegalArgumentException("Max window must be between 0 and 24");
+        }
+
         this.maxWindow = maxWindow;
     }
 
@@ -39,7 +54,7 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task other) {
-        // TODO Auto-generated method stub
+
         return Integer.compare(this.maxWindow, other.maxWindow);
     }
 

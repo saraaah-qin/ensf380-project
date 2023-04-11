@@ -73,8 +73,6 @@ INSERT INTO TREATMENTS (AnimalID, TaskID, StartHour) VALUES
 (6, 1, 2),
 (6, 1, 2),
 (6, 1, 2),
-(6, 1, 2),
-(6, 1, 2),
 (6, 1, 4),
 (6, 1, 6),
 (6, 1, 8),

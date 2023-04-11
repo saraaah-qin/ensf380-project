@@ -12,19 +12,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
-
-import org.w3c.dom.ranges.Range;
 
 public class Schedule {
     private boolean initialized = true;
-    private static ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
-    private static List<AnimalTask> scheduleAnimalTasks = new ArrayList<>(); // primary scheduled list
-    private static List<AnimalTask> scheduleAnimalTasks2 = new ArrayList<>(); // secondary scheduled list for the
-                                                                              // assistant
-    private static List<AnimalTask> leftOverTasks = new ArrayList<>(); // Tertiary scheduled list for the animal tasks
-                                                                       // that are not able to be scheduled
+    private ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
+    private List<AnimalTask> scheduleAnimalTasks = new ArrayList<>(); // primary scheduled list
+    private List<AnimalTask> scheduleAnimalTasks2 = new ArrayList<>(); // secondary scheduled list for the
+                                                                       // assistant
+    private List<AnimalTask> leftOverTasks = new ArrayList<>(); // Tertiary scheduled list for the animal tasks
+                                                                // that are not able to be scheduled
 
+    // Constructor
     public Schedule() {
         generateSchedule();
     }
@@ -55,9 +53,10 @@ public class Schedule {
                             animalQuery.getString("AnimalSpecies"));
                     animals.put(animalQuery.getInt("AnimalID"), animal);
                 }
+                animalQuery.close();
 
                 ResultSet tasksQuery = statement.executeQuery(
-                        "SELECT TREATMENTS.AnimalID, TREATMENTS.TaskID, TREATMENTS.StartHour, TASKS.MaxWindow, TASKS.Description, TASKS.Duration "
+                        "SELECT TREATMENTS.AnimalID, TREATMENTS.TaskID, TREATMENTS.StartHour, TASKS.MaxWindow, TASKS.Description, TASKS.Duration, TREATMENTS.TreatmentID "
                                 +
                                 "FROM TREATMENTS " +
                                 "JOIN TASKS ON TREATMENTS.TaskID = TASKS.TaskID " +
@@ -65,10 +64,13 @@ public class Schedule {
                                 "ORDER BY (TASKS.MaxWindow) ASC,  TASKS.Duration DESC, TREATMENTS.StartHour ASC;");
 
                 while (tasksQuery.next()) {
-                    animalTasks.add(new AnimalTask(animals.get(tasksQuery.getInt("AnimalID")),
+                    AnimalTask temporaryAdding = new AnimalTask(animals.get(tasksQuery.getInt("AnimalID")),
                             tasksQuery.getString("Description"),
                             tasksQuery.getInt("StartHour"), tasksQuery.getInt("TaskID"), tasksQuery.getInt("MaxWindow"),
-                            tasksQuery.getInt("Duration")));
+                            tasksQuery.getInt("Duration"));
+                    temporaryAdding.setTreatmentID(tasksQuery.getInt("TreatmentID"));
+                    System.out.println(tasksQuery.getInt("TreatmentID"));
+                    animalTasks.add(temporaryAdding);
 
                 }
 
@@ -97,10 +99,7 @@ public class Schedule {
             }
 
             sortAnimalTasks(); // sorts based off MW
-
-            int leftover = 0;
             int hour = 0;
-            int spillOver = 0;
             int time = 0;
 
             while (hour < 24) {
@@ -153,9 +152,9 @@ public class Schedule {
             }
 
             if (animalTasks.size() > 0) {
-                leftover = 0;
+
                 hour = 0;
-                spillOver = 0;
+
                 time = 0;
 
                 while (hour < 24) {
@@ -259,10 +258,6 @@ public class Schedule {
                 currentHour += 1;
             }
 
-            // I NOW NEED TO ORGANIZE ALL THE START DATES
-
-            // return scheduleOutput;
-
         } catch (Exception e) {
             List<String> error = new ArrayList<String>();
             error.add(e.getMessage());
@@ -278,77 +273,6 @@ public class Schedule {
 
         });
     }
-
-    // public List<String> backUp(List<String> startHour, List<String> task,
-    // List<String> animal,
-    // List<Integer> timeList) {
-    // try {
-    // Class.forName("com.mysql.cj.jdbc.Driver");
-
-    // Connection myConnect =
-    // DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/EWR", "oop",
-    // "password");
-    // Statement statement = myConnect.createStatement();
-
-    // int i = 0;
-    // while (i < startHour.size()) {
-    // int oldStartHour = Integer.parseInt(startHour.get(i));
-    // if (oldStartHour == -1) {
-    // i++;
-    // } else {
-    // int animalID = 0;
-    // ResultSet animalQuery = statement
-    // .executeQuery("SELECT AnimalID FROM ANIMALS WHERE AnimalNickname = " +
-    // animal.get(0) + ";");
-    // while (animalQuery.next()) {
-    // animalID = animalQuery.getInt("AnimalID");
-    // }
-    // animalQuery.close();
-
-    // int taskID = 0;
-    // ResultSet taskQuery = statement
-    // .executeQuery("SELECT TaskID FROM TASKS WHERE TaskDescription = " +
-    // task.get(0) + ";");
-    // while (taskQuery.next()) {
-    // taskID = taskQuery.getInt("TaskID");
-    // }
-    // taskQuery.close();
-
-    // int newStartHour = timeList.get(i);
-
-    // i++;
-
-    // for (AnimalTask currAnimalTask : scheduleAnimalTasks) {
-    // if (currAnimalTask.getAnimal().getAnimalID() == animalID
-    // && currAnimalTask.getTaskID() == taskID) {
-    // currAnimalTask.setStartHour(newStartHour);
-    // }
-    // }
-    // for (AnimalTask currAnimalTask : scheduleAnimalTasks2) {
-    // if (currAnimalTask.getAnimal().getAnimalID() == animalID
-    // && currAnimalTask.getTaskID() == taskID) {
-    // currAnimalTask.setStartHour(newStartHour);
-    // }
-    // }
-    // for (AnimalTask currAnimalTask : leftOverTasks) {
-    // if (currAnimalTask.getAnimal().getAnimalID() == animalID
-    // && currAnimalTask.getTaskID() == taskID) {
-    // currAnimalTask.setStartHour(newStartHour);
-    // }
-    // }
-    // }
-
-    // }
-    // myConnect.close();
-    // }
-
-    // catch (Exception e) {
-    // List<String> error = new ArrayList<String>();
-    // error.add(e.getMessage());
-    // return error;
-    // }
-
-    // }
 
     public boolean isInitialized() {
         return initialized;
@@ -368,5 +292,21 @@ public class Schedule {
 
     public List<AnimalTask> getLeftOverTasks() {
         return leftOverTasks;
+    }
+
+    public void setAnimalTasks(ArrayList<AnimalTask> animalTasks) {
+        this.animalTasks = animalTasks;
+    }
+
+    public void setScheduleAnimalTasks(List<AnimalTask> scheduleAnimalTasks) {
+        this.scheduleAnimalTasks = scheduleAnimalTasks;
+    }
+
+    public void setScheduleAnimalTasks2(List<AnimalTask> scheduleAnimalTasks2) {
+        this.scheduleAnimalTasks2 = scheduleAnimalTasks2;
+    }
+
+    public void setLeftOverTasks(List<AnimalTask> leftOverTasks) {
+        this.leftOverTasks = leftOverTasks;
     }
 }
