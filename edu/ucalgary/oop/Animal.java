@@ -18,16 +18,16 @@ public class Animal {
     /**
      * This is the constructor for the Animal class.
      * 
-     * @param AnimalID       The animal's ID.
-     * @param AnimalNickname The animal's nickname.
-     * @param AnimalSpecies  The animal's species.
+     * @param animalID       The animal's ID.
+     * @param animalNickname The animal's nickname.
+     * @param animalSpecies  The animal's species.
      * @return Animal object.
      */
 
-    public Animal(int AnimalID, String AnimalNickname, String AnimalSpecies) {
-        this.animalNickname = AnimalNickname;
-        this.animalSpecies = new AnimalSpecies(AnimalSpecies);
-        this.animalID = AnimalID;
+    public Animal(int animalID, String animalNickname, String animalSpecies) {
+        this.animalNickname = animalNickname;
+        this.animalSpecies = new AnimalSpecies(animalSpecies);
+        this.animalID = animalID;
     }
 
     /**

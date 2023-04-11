@@ -40,45 +40,45 @@ public class AnimalSpecies {
     /**
      * This is the constructor for the AnimalSpecies class.
      * 
-     * @param AnimalSpecies The animal's species.
+     * @param animalSpecies The animal's species.
      * @return AnimalSpecies object.
      */
-    public AnimalSpecies(String AnimalSpecies) {
-        if (AnimalSpecies.equals("coyote")) {
+    public AnimalSpecies(String animalSpecies) {
+        if (animalSpecies.equals("coyote")) {
             this.prepTime = 10;
             this.cleanTime = 5;
             this.animalType = new AnimalType("crepuscular");
 
-            this.animalSpeciesString = AnimalSpecies;
-        } else if (AnimalSpecies.equals("porcupine")) {
+            this.animalSpeciesString = animalSpecies;
+        } else if (animalSpecies.equals("porcupine")) {
             this.prepTime = 0;
             this.cleanTime = 10;
 
             this.animalType = new AnimalType("crepuscular");
-            this.animalSpeciesString = AnimalSpecies;
+            this.animalSpeciesString = animalSpecies;
 
-        } else if (AnimalSpecies.equals("fox")) {
+        } else if (animalSpecies.equals("fox")) {
             this.prepTime = 5;
             this.cleanTime = 5;
 
             this.animalType = new AnimalType("nocturnal");
-            this.animalSpeciesString = AnimalSpecies;
+            this.animalSpeciesString = animalSpecies;
 
         }
 
-        else if (AnimalSpecies.equals("raccoon")) {
+        else if (animalSpecies.equals("raccoon")) {
             this.prepTime = 0;
             this.cleanTime = 5;
 
             this.animalType = new AnimalType("nocturnal");
-            this.animalSpeciesString = AnimalSpecies;
+            this.animalSpeciesString = animalSpecies;
 
-        } else if (AnimalSpecies.equals("beaver")) {
+        } else if (animalSpecies.equals("beaver")) {
             this.prepTime = 0;
             this.cleanTime = 5;
 
             this.animalType = new AnimalType("diurnal");
-            this.animalSpeciesString = AnimalSpecies;
+            this.animalSpeciesString = animalSpecies;
         } else {
             throw new IllegalArgumentException("Invalid Animal Species");
         }
