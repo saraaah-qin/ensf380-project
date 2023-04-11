@@ -97,41 +97,16 @@ public class ScheduleGui extends JFrame implements ActionListener {
             }
         }
         else if(e.getSource() == modifybutton){
-            String thesched = schedule.generateSchedule();
-            String[] theschedsplit = thesched.split("\n");
             String modifyText = modifyTextArea.getText();
             String[] mods = modifyText.split("\n");
             for(String mod : mods){
                 String[] modsplit = mod.split("\\s+");
                 int startHour = Integer.parseInt(modsplit[0].substring(0, modsplit[0].indexOf(":")));
-                int startMinute = Integer.parseInt(modsplit[0].substring(modsplit[0].indexOf(":") + 1));
                 int taskindex = Integer.parseInt(modsplit[1]);
-                theschedsplit[taskindex] = startHour + ":" + startMinute + theschedsplit[taskindex].substring(5);
-                int i;
-                for(i = 1; i < theschedsplit.length; i++){
-                    String[] current = theschedsplit[i].split(":");
-                    int curnum = Integer.parseInt(current[0]) * 60 + Integer.parseInt(current[1].substring(0, 2));
-                    String[] prev = theschedsplit[i-1].split(":");
-                    int prevnum = Integer.parseInt(prev[0]) * 60 + Integer.parseInt(prev[1].substring(0, 2));
-                    String[] newtime = theschedsplit[taskindex].split(":");
-                    int newnum = Integer.parseInt(newtime[0]) * 60 + Integer.parseInt(newtime[1].substring(0,2));
-                    if(newnum > prevnum && newnum < curnum){
-                        String[] newschedsplit = new String[theschedsplit.length + 1];
-                        System.arraycopy(theschedsplit, 0, newschedsplit, 0, i);
-                        newschedsplit[i] = theschedsplit[taskindex];
-                        System.arraycopy(theschedsplit, i, newschedsplit, i+1, theschedsplit.length - i);
-                        theschedsplit = newschedsplit;
-                        break;
-                    }
-                }
-                if(theschedsplit.length == i){
-                    String[] newschedsplit = new String[theschedsplit.length + 1];
-                    System.arraycopy(theschedsplit, 0, newschedsplit, 0, i);
-                    newschedsplit[i] = theschedsplit[taskindex];
-                    theschedsplit = newschedsplit;
-                }
+                // Need to figure out the method set up in order to change the hour for a given task here using the setters. 
+                // Just having trouble figuring out the right way the setters interact between methods
             }
-            String result = String.join("\n", theschedsplit);
+            String result = schedule.generateSchedule();
             resultTextArea.setText(result);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("schedule.txt"))) {
                 writer.write(result);
