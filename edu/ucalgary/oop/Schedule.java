@@ -105,78 +105,98 @@ public class Schedule {
                     if (time >= 60) {
                         break;
                     }
-                    int indexForSearch=5;
+                    int indexForSearch=-1;
                     if(task.getDescription().equals("FEEDING ANIMALS")){
                         if(task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("coyote")){
-                            indexForSearch = 0;
+                            indexForSearch = 0;                        
+                            if(animalFeedingPrepTable.get(hour)[indexForSearch] == false){
+                            
+                                expectedTime=task.getAnimal().getAnimalSpecies().getPrepTime();
+                            }
                         }
                         else if(task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("fox")){
                             indexForSearch = 1;
-                        }
-                        
-                        if(indexForSearch!= 5 && animalFeedingPrepTable.get(hour)[indexForSearch] == false){
+                            if(animalFeedingPrepTable.get(hour)[indexForSearch] == false){
                             
-                            expectedTime=task.getAnimal().getAnimalSpecies().getPrepTime();
+                                expectedTime=task.getAnimal().getAnimalSpecies().getPrepTime();
+                            }
                         }
                     
                     }
 
-                    if (task.getStartHour() <= hour) {
-                        if (time + task.getDuration() +expectedTime<= 60) {
-                            if (hour + task.getDuration()+expectedTime / 60 < task.getMaxWindow() + task.getStartHour()) {
-
+                    if ((task.getStartHour() <= hour)&& (time + task.getDuration() +expectedTime<= 60)&& (hour + (task.getDuration()+expectedTime) / 60 < task.getMaxWindow() + task.getStartHour())){
                                 task.startTime = LocalTime.of(hour, time % 60);
-                                task.endTime = LocalTime.of(hour + (time + task.getDuration()+expectedTime) / 60,
-                                        (time + task.getDuration()) % 60);
-                                time += task.getDuration();
+                                task.endTime = LocalTime.of(hour + (time + task.getDuration()+expectedTime) / 60, (time + task.getDuration()+expectedTime) % 60);
+                                time += task.getDuration()+expectedTime;
                                 scheduleAnimalTasks.add(task);
-                                if(task.getDescription().equals("FEEDING ANIMALS")){
+                                if(task.getDescription().equals("FEEDING ANIMALS")&& (task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("coyote")||task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("fox"))){
+                                
                                     animalFeedingPrepTable.get(hour)[indexForSearch] = true;
                                 }
                                 iterator.remove();
-
-
-                            }
-                        }
+                            
                     }
                 }
                 time = 0;
                 hour += 1;
             }
 
+
+
+
             if (animalTasks.size() > 0) {
                 leftover = 0;
                 hour = 0;
                 spillOver = 0;
                 time = 0;
-                while (hour <= 23) {
+                
+                while (hour < 24) {
                     Iterator<AnimalTask> iterator2 = animalTasks.iterator();
+                    
                     while (iterator2.hasNext()) {
                         AnimalTask task = iterator2.next();
+                        int expectedTime = 0;
+    
                         if (time >= 60) {
                             break;
                         }
-                        if (task.getStartHour() <= hour) {
-                            if (time + task.getDuration() <= 60) {
-                                if (hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
-                                    if (hour + task.getDuration() / 60 < task.getMaxWindow() + task.getStartHour()) {
-
-                                        task.startTime = LocalTime.of(hour, time % 60);
-                                        task.endTime = LocalTime.of(hour + (time + task.getDuration()) / 60,
-                                                (time + task.getDuration()) % 60);
-                                        time += task.getDuration();
-                                        scheduleAnimalTasks2.add(task);
-                                        iterator2.remove(); // remove task from animalTasks
-
-                                    }
+                        int indexForSearch=-1;
+                        if(task.getDescription().equals("FEEDING ANIMALS")){
+                            if(task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("coyote")){
+                                indexForSearch = 0;                        
+                                if(animalFeedingPrepTable.get(hour)[indexForSearch] == false){
+                                
+                                    expectedTime=task.getAnimal().getAnimalSpecies().getPrepTime();
                                 }
                             }
+                            else if(task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("fox")){
+                                indexForSearch = 1;
+                                if(animalFeedingPrepTable.get(hour)[indexForSearch] == false){
+                                
+                                    expectedTime=task.getAnimal().getAnimalSpecies().getPrepTime();
+                                }
+                            }
+                        }
+                        if ((task.getStartHour() <= hour)&& (time + task.getDuration() +expectedTime<= 60)&& (hour + (task.getDuration()+expectedTime) / 60 < task.getMaxWindow() + task.getStartHour())){
+                                    task.startTime = LocalTime.of(hour, time % 60);
+                                    task.endTime = LocalTime.of(hour + (time + task.getDuration()+expectedTime) / 60, (time + task.getDuration()+expectedTime) % 60);
+                                    time += task.getDuration()+expectedTime;
+                                    scheduleAnimalTasks2.add(task);
+                                    if(task.getDescription().equals("FEEDING ANIMALS")&& (task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("coyote")||task.getAnimal().getAnimalSpecies().getAnimalSpeciesString().equals("fox"))){
+                                    
+                                        animalFeedingPrepTable.get(hour)[indexForSearch] = true;
+                                    }
+                                    iterator2.remove();
+                                
                         }
                     }
                     time = 0;
                     hour += 1;
-                }
-            }
+            }}
+
+                        
+
+
 
             StringBuilder scheduleOutput = new StringBuilder();
 
@@ -217,7 +237,7 @@ public class Schedule {
                         }
 
                         scheduleOutput.append(
-                                task.startTime+"* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")");
+                                task.getAnimal().getAnimalSpecies().getAnimalSpeciesString()+task.startTime+"* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")");
                                 scheduleOutput.append("\n");
                     }
                 }
@@ -226,7 +246,7 @@ public class Schedule {
                     if (task.startTime.getHour() == currentHour) {
 
                         scheduleOutput.append(
-                                task.startTime+"* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")")
+                            task.getAnimal().getAnimalSpecies().getAnimalSpeciesString()+task.startTime+task.startTime+"* " + task.getDescription() + "(" + task.getAnimal().getAnimalNickname() + ")")
                                 .append("\n");
                     }
                 }
@@ -295,25 +315,7 @@ public class Schedule {
             myConnect.close();
             return scheduleOutput.toString();
 
-            /*
-             * Cages
-             * Orphaned animals of the same litter share a cage and
-             * are listed as a single animal in the database.
-             * Coyote - 5 min/cage
-             * Porcupines - 10 min/cage
-             * Foxes - 5 min/cage
-             * Raccoons - 5 min/cage
-             * Beavers - 5 min/cage
-             * Feeding
-             * Noturnal animals fed in 3 hr window starting at midnight
-             * - Foxes(5min + 5min prep /each)
-             * - Beavers(5min/each)
-             * Diurnal animals fed in 3 hr window starting at 8 AM
-             * - Raccoons(5min/each)
-             * Crepuscular animals fed in 3 hr window starting at 7 PM
-             * - Coyotes(5min + 10min prep /each)
-             * - Porcupines(5min/each)
-             */
+
 
         } catch (Exception e) {
             return e.getMessage();

@@ -6,6 +6,25 @@ private int cleanTime;
 private AnimalType animalType;
 private int feedingTime;
 private String animalSpeciesString;
+            /*
+             * Cages
+             * Orphaned animals of the same litter share a cage and
+             * are listed as a single animal in the database.
+             * Coyote - 5 min/cage
+             * Porcupines - 10 min/cage
+             * Foxes - 5 min/cage
+             * Raccoons - 5 min/cage
+             * Beavers - 5 min/cage
+             * Feeding
+             * Noturnal animals fed in 3 hr window starting at midnight
+             * - Foxes(5min + 5min prep /each)
+             * - Beavers(5min/each)
+             * Diurnal animals fed in 3 hr window starting at 8 AM
+             * - Raccoons(5min/each)
+             * Crepuscular animals fed in 3 hr window starting at 7 PM
+             * - Coyotes(5min + 10min prep /each)
+             * - Porcupines(5min/each)
+             */
 
     AnimalSpecies(String AnimalSpecies){
         if(AnimalSpecies.equals("coyote")){
