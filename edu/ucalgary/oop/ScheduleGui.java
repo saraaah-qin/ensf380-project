@@ -27,7 +27,7 @@ public class ScheduleGui extends JFrame implements ActionListener {
 
         JTextArea textArea = new JTextArea("To modify the schedule, enter the new time and the task index\n for each modification into the input box next to the Modify button. \n" +
         "Indexes start from 0 at the top. The format for modifying a task is\nhh:mm <taskindex> \neach modification should be" +
-        " in a new line.");
+        " in a new line.\nThen hit the Modify button.");
         textArea.setEditable(false);
         JScrollPane txtscrollPane = new JScrollPane(textArea);
         txtscrollPane.setPreferredSize(new Dimension(400, 200));
