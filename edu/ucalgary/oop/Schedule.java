@@ -17,7 +17,7 @@ import java.util.TreeSet;
 import org.w3c.dom.ranges.Range;
 
 public class Schedule {
-    ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
+    private static ArrayList<AnimalTask> animalTasks = new ArrayList<AnimalTask>();
     private static List<AnimalTask> scheduleAnimalTasks = new ArrayList(); // primary scheduled list
     private static List<AnimalTask> scheduleAnimalTasks2 = new ArrayList(); // secondary scheduled list for the
                                                                             // assistant
